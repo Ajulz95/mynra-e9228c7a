@@ -14,7 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          date_of_birth: string | null
+          first_name: string | null
+          id: string
+          onboarding_completed: boolean | null
+          pseudonym: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          first_name?: string | null
+          id?: string
+          onboarding_completed?: boolean | null
+          pseudonym: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          first_name?: string | null
+          id?: string
+          onboarding_completed?: boolean | null
+          pseudonym?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_boundaries: {
+        Row: {
+          additional_notes: string | null
+          allow_direct_messages: boolean | null
+          allow_group_chats: boolean | null
+          created_at: string
+          id: string
+          preferred_response_time: string | null
+          topics_to_avoid: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          allow_direct_messages?: boolean | null
+          allow_group_chats?: boolean | null
+          created_at?: string
+          id?: string
+          preferred_response_time?: string | null
+          topics_to_avoid?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          additional_notes?: string | null
+          allow_direct_messages?: boolean | null
+          allow_group_chats?: boolean | null
+          created_at?: string
+          id?: string
+          preferred_response_time?: string | null
+          topics_to_avoid?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_challenges: {
+        Row: {
+          challenge: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          challenge: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          challenge?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_journey_stages: {
+        Row: {
+          created_at: string
+          id: string
+          stage: Database["public"]["Enums"]["journey_stage"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          stage: Database["public"]["Enums"]["journey_stage"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          stage?: Database["public"]["Enums"]["journey_stage"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_support_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          preference: Database["public"]["Enums"]["support_preference"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          preference: Database["public"]["Enums"]["support_preference"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          preference?: Database["public"]["Enums"]["support_preference"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +160,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      journey_stage:
+        | "exploring"
+        | "awaiting_diagnosis"
+        | "post_diagnosis"
+        | "supporting_others"
+      support_preference:
+        | "just_chatting"
+        | "guided_insights"
+        | "peer_support"
+        | "professional_resources"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +296,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      journey_stage: [
+        "exploring",
+        "awaiting_diagnosis",
+        "post_diagnosis",
+        "supporting_others",
+      ],
+      support_preference: [
+        "just_chatting",
+        "guided_insights",
+        "peer_support",
+        "professional_resources",
+      ],
+    },
   },
 } as const

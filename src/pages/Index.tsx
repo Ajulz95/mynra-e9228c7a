@@ -1,7 +1,19 @@
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Shield, Users } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/profile');
+    }
+  }, [user, loading, navigate]);
+
   return (
     <div className="min-h-screen bg-background flex flex-col safe-area-inset">
       {/* Status Bar Spacer */}
@@ -60,6 +72,7 @@ const Index = () => {
         <Button 
           className="w-full h-14 text-base font-semibold bg-primary hover:bg-primary/90 rounded-xl shadow-lg"
           size="lg"
+          onClick={() => navigate('/auth')}
         >
           Get Started
         </Button>
@@ -67,6 +80,7 @@ const Index = () => {
           variant="outline"
           className="w-full h-14 text-base font-semibold border-2 border-primary text-primary hover:bg-primary/5 rounded-xl"
           size="lg"
+          onClick={() => navigate('/auth')}
         >
           Sign In
         </Button>
