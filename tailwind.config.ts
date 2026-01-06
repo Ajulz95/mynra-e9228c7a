@@ -87,6 +87,7 @@ export default {
   		},
   		fontFamily: {
   			sans: [
+  				'Nunito',
   				'ui-sans-serif',
   				'system-ui',
   				'sans-serif',
