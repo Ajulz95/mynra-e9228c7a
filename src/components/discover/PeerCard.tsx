@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { PeerProfile } from '@/pages/Discover';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,8 @@ import {
   Check, 
   Hourglass,
   Sparkles,
-  Lock
+  Lock,
+  MessageCircle
 } from 'lucide-react';
 
 interface PeerCardProps {
@@ -47,6 +49,7 @@ const challengeEmojis: Record<string, string> = {
 };
 
 export default function PeerCard({ peer, onConnect, onAccept }: PeerCardProps) {
+  const navigate = useNavigate();
   const isMatched = peer.connectionStatus === 'matched';
   const isPendingSent = peer.connectionStatus === 'pending_sent';
   const isPendingReceived = peer.connectionStatus === 'pending_received';
@@ -203,11 +206,11 @@ export default function PeerCard({ peer, onConnect, onAccept }: PeerCardProps) {
 
           {isMatched && (
             <Button
-              variant="outline"
-              className="flex-1 border-accent text-accent"
+              onClick={() => navigate(`/chat/${peer.userId}`)}
+              className="flex-1 bg-accent hover:bg-accent/90 text-white"
             >
-              <Heart className="w-4 h-4 mr-2" />
-              Connected
+              <MessageCircle className="w-4 h-4 mr-2" />
+              Chat
             </Button>
           )}
         </div>
