@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Chat from "./pages/Chat";
 import Insights from "./pages/Insights";
+import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/chat/:oderId" element={<Chat />} />
