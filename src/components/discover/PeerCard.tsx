@@ -103,7 +103,7 @@ export default function PeerCard({ peer, onConnect, onAccept }: PeerCardProps) {
         {/* Shared challenges highlight */}
         {peer.sharedChallenges.length > 0 && (
           <div className="mb-3 p-2 bg-secondary/10 rounded-lg">
-            <p className="text-xs font-medium text-secondary mb-2">
+            <p className="text-xs font-medium text-primary mb-2">
               🤝 {peer.sharedChallenges.length} shared {peer.sharedChallenges.length === 1 ? 'experience' : 'experiences'}
             </p>
             <div className="flex flex-wrap gap-1">
