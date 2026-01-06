@@ -10,6 +10,7 @@ import Onboarding from "./pages/Onboarding";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import Chat from "./pages/Chat";
+import Insights from "./pages/Insights";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/chat/:oderId" element={<Chat />} />
+            <Route path="/insights" element={<Insights />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

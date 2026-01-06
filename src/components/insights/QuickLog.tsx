@@ -1,0 +1,103 @@
+import { useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { Smile, Meh, Frown, Zap, Moon } from 'lucide-react';
+
+interface QuickLogProps {
+  onComplete: () => void;
+}
+
+const moodOptions = [
+  { value: 1, icon: Frown, label: 'Struggling', color: 'text-red-400' },
+  { value: 2, icon: Frown, label: 'Low', color: 'text-orange-400' },
+  { value: 3, icon: Meh, label: 'Okay', color: 'text-yellow-400' },
+  { value: 4, icon: Smile, label: 'Good', color: 'text-lime-400' },
+  { value: 5, icon: Smile, label: 'Great', color: 'text-green-400' },
+];
+
+export default function QuickLog({ onComplete }: QuickLogProps) {
+  const [selectedMood, setSelectedMood] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  const handleQuickSave = async () => {
+    if (!user || !selectedMood) return;
+
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from('journal_entries')
+        .insert({
+          user_id: user.id,
+          content: `Quick mood check-in: ${moodOptions.find(m => m.value === selectedMood)?.label}`,
+          mood: selectedMood,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Mood logged 💚',
+        description: 'Great job checking in with yourself!',
+      });
+
+      setSelectedMood(null);
+      onComplete();
+    } catch (error: any) {
+      toast({
+        title: 'Error saving',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Card className="shadow-lg border-0 bg-white">
+      <CardContent className="p-4">
+        <p className="text-sm font-medium text-foreground mb-3">
+          How are you feeling right now?
+        </p>
+        
+        <div className="flex justify-between gap-1 mb-3">
+          {moodOptions.map((option) => {
+            const Icon = option.icon;
+            const isSelected = selectedMood === option.value;
+            return (
+              <button
+                key={option.value}
+                onClick={() => setSelectedMood(option.value)}
+                className={`flex-1 p-3 rounded-xl transition-all flex flex-col items-center gap-1 ${
+                  isSelected 
+                    ? 'bg-primary/10 ring-2 ring-primary' 
+                    : 'bg-muted/50 hover:bg-muted'
+                }`}
+              >
+                <Icon className={`w-6 h-6 ${isSelected ? 'text-primary' : option.color}`} />
+                <span className={`text-xs ${isSelected ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                  {option.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {selectedMood && (
+          <Button
+            onClick={handleQuickSave}
+            disabled={saving}
+            size="sm"
+            className="w-full bg-secondary hover:bg-secondary/90"
+          >
+            {saving ? 'Saving...' : 'Log Mood'}
+          </Button>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

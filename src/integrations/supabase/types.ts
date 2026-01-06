@@ -41,6 +41,51 @@ export type Database = {
         }
         Relationships: []
       }
+      journal_entries: {
+        Row: {
+          anxiety_level: number | null
+          content: string
+          created_at: string
+          energy_level: number | null
+          id: string
+          is_private: boolean | null
+          mood: number | null
+          sleep_quality: number | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          anxiety_level?: number | null
+          content: string
+          created_at?: string
+          energy_level?: number | null
+          id?: string
+          is_private?: boolean | null
+          mood?: number | null
+          sleep_quality?: number | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          anxiety_level?: number | null
+          content?: string
+          created_at?: string
+          energy_level?: number | null
+          id?: string
+          is_private?: boolean | null
+          mood?: number | null
+          sleep_quality?: number | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -183,6 +228,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      symptom_logs: {
+        Row: {
+          id: string
+          intensity: number | null
+          logged_at: string
+          notes: string | null
+          symptom: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          intensity?: number | null
+          logged_at?: string
+          notes?: string | null
+          symptom: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          intensity?: number | null
+          logged_at?: string
+          notes?: string | null
+          symptom?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_boundaries: {
         Row: {
