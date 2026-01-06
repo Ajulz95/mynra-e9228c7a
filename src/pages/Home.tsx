@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Lock, Phone, TrendingUp, PenLine } from "lucide-react";
+import { Lock, Phone, TrendingUp, PenLine, Bell, Settings } from "lucide-react";
 import { toast } from "sonner";
 import BottomNav from "@/components/BottomNav";
 
@@ -113,8 +113,28 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
+      {/* Top Icons */}
+      <div className="flex items-center justify-end gap-2 px-5 pt-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-muted-foreground hover:text-foreground"
+          onClick={() => navigate("/profile")}
+        >
+          <Bell className="w-5 h-5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-muted-foreground hover:text-foreground"
+          onClick={() => navigate("/profile")}
+        >
+          <Settings className="w-5 h-5" />
+        </Button>
+      </div>
+
       {/* Header Section */}
-      <div className="px-5 pt-6 pb-4">
+      <div className="px-5 pb-4">
         <h1 className="text-2xl font-bold text-foreground">
           {getGreeting()}, {displayName}
         </h1>
