@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut } from 'lucide-react';
+import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut, Users, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import BottomNav from '@/components/BottomNav';
@@ -52,6 +52,7 @@ const challengeEmojis: Record<string, string> = {
 
 export default function Profile() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [matchCount, setMatchCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const { user, signOut, loading: authLoading } = useAuth();
@@ -101,6 +102,24 @@ export default function Profile() {
           .from('user_support_preferences')
           .select('preference')
           .eq('user_id', user.id);
+
+        // Fetch match count
+        const { data: sentRequests } = await supabase
+          .from('connection_requests')
+          .select('recipient_id')
+          .eq('requester_id', user.id)
+          .eq('status', 'accepted');
+
+        const { data: receivedRequests } = await supabase
+          .from('connection_requests')
+          .select('requester_id')
+          .eq('recipient_id', user.id)
+          .eq('status', 'accepted');
+
+        const sentTo = new Set(sentRequests?.map(r => r.recipient_id) || []);
+        const receivedFrom = new Set(receivedRequests?.map(r => r.requester_id) || []);
+        const mutualMatches = [...sentTo].filter(id => receivedFrom.has(id));
+        setMatchCount(mutualMatches.length);
 
         setProfile({
           pseudonym: profileData.pseudonym,
@@ -186,6 +205,29 @@ export default function Profile() {
 
       {/* Content */}
       <div className="px-6 -mt-8 space-y-4 pb-8">
+        {/* Matches Card */}
+        <Card 
+          className="shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+          onClick={() => navigate('/matches')}
+        >
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-foreground">My Peers</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {matchCount} {matchCount === 1 ? 'match' : 'matches'}
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Bio Card */}
         {profile.bio && (
           <Card className="shadow-lg">
