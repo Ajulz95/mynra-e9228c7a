@@ -4,10 +4,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Users, RefreshCw } from 'lucide-react';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
 import PeerCard from '@/components/discover/PeerCard';
 import EmptyState from '@/components/discover/EmptyState';
 import NotificationBell from '@/components/notifications/NotificationBell';
+import BottomNav from '@/components/BottomNav';
 
 export interface PeerProfile {
   userId: string;
@@ -285,26 +286,7 @@ export default function Discover() {
         )}
       </div>
 
-      {/* Bottom Nav */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 safe-area-inset">
-        <div className="flex justify-center gap-8">
-          <Button
-            variant="ghost"
-            className="flex flex-col items-center gap-1 h-auto py-2"
-            onClick={() => navigate('/profile')}
-          >
-            <Users className="w-5 h-5 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">Profile</span>
-          </Button>
-          <Button
-            variant="ghost"
-            className="flex flex-col items-center gap-1 h-auto py-2"
-          >
-            <Users className="w-5 h-5 text-primary" />
-            <span className="text-xs text-primary font-medium">Discover</span>
-          </Button>
-        </div>
-      </div>
+      <BottomNav />
     </div>
   );
 }

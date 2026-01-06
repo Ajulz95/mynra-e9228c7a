@@ -11,6 +11,7 @@ import JournalEditor from '@/components/insights/JournalEditor';
 import MoodTrends from '@/components/insights/MoodTrends';
 import ThemeCloud from '@/components/insights/ThemeCloud';
 import QuickLog from '@/components/insights/QuickLog';
+import BottomNav from '@/components/BottomNav';
 
 export interface JournalEntry {
   id: string;
@@ -236,13 +237,7 @@ export default function Insights() {
         </TabsContent>
       </Tabs>
 
-      {/* Privacy Footer */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur border-t border-border p-3 text-center safe-area-inset">
-        <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
-          <Lock className="w-3 h-3" />
-          Your entries are encrypted and only visible to you
-        </p>
-      </div>
+      <BottomNav />
     </div>
   );
 }
