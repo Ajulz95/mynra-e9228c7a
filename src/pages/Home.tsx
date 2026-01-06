@@ -69,6 +69,7 @@ const Home = () => {
   const [showReflection, setShowReflection] = useState(false);
   const [reflection, setReflection] = useState("");
   const [displayName, setDisplayName] = useState("there");
+  const [selectedMood, setSelectedMood] = useState<typeof moodEmojis[0] | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -92,9 +93,14 @@ const Home = () => {
   };
 
   const handleMoodSelect = (mood: typeof moodEmojis[0]) => {
+    setSelectedMood(mood);
     toast.success("Thank you for sharing", {
       description: `Feeling ${mood.label.toLowerCase()} is okay. We're here for you.`,
     });
+  };
+
+  const handleChangeMood = () => {
+    setSelectedMood(null);
   };
 
   const handleSaveReflection = () => {
@@ -119,19 +125,41 @@ const Home = () => {
       <div className="px-5 pb-6">
         <Card className="border-0 shadow-sm bg-card">
           <CardContent className="py-4">
-            <p className="text-sm font-medium text-muted-foreground mb-3">Daily Check-in</p>
-            <div className="flex justify-between">
-              {moodEmojis.map((mood) => (
-                <button
-                  key={mood.value}
-                  onClick={() => handleMoodSelect(mood)}
-                  className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-muted/50 transition-colors"
+            {selectedMood ? (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{selectedMood.emoji}</span>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Today's Emotion</p>
+                    <p className="font-bold text-foreground">{selectedMood.label}</p>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-primary text-sm"
+                  onClick={handleChangeMood}
                 >
-                  <span className="text-2xl">{mood.emoji}</span>
-                  <span className="text-xs text-muted-foreground">{mood.label}</span>
-                </button>
-              ))}
-            </div>
+                  Change
+                </Button>
+              </div>
+            ) : (
+              <>
+                <p className="text-sm font-medium text-muted-foreground mb-3">Daily Check-in</p>
+                <div className="flex justify-between">
+                  {moodEmojis.map((mood) => (
+                    <button
+                      key={mood.value}
+                      onClick={() => handleMoodSelect(mood)}
+                      className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <span className="text-2xl">{mood.emoji}</span>
+                      <span className="text-xs text-muted-foreground">{mood.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
