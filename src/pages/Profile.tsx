@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import NotificationBell from '@/components/notifications/NotificationBell';
 
 interface ProfileData {
   pseudonym: string;
@@ -144,7 +145,8 @@ export default function Profile() {
       <div className="bg-primary text-white p-6 pb-16">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-xl font-semibold">My Profile</h1>
-          <div className="flex gap-2">
+          <div className="flex gap-1">
+            <NotificationBell />
             <Button
               variant="ghost"
               size="icon"
