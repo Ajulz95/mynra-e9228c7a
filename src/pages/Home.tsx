@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Lock, Phone, TrendingUp, PenLine, Bell, Settings } from "lucide-react";
 import { toast } from "sonner";
+import { startOfDay, endOfDay } from "date-fns";
 import BottomNav from "@/components/BottomNav";
 
 const moodEmojis = [
@@ -70,6 +71,7 @@ const Home = () => {
   const [reflection, setReflection] = useState("");
   const [displayName, setDisplayName] = useState("there");
   const [selectedMood, setSelectedMood] = useState<typeof moodEmojis[0] | null>(null);
+  const [todayMoodLogId, setTodayMoodLogId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -85,6 +87,39 @@ const Home = () => {
     };
     fetchProfile();
   }, [user]);
+
+  // Load today's mood on mount
+  useEffect(() => {
+    const loadTodayMood = async () => {
+      if (!user) return;
+
+      const today = new Date();
+      const dayStart = startOfDay(today).toISOString();
+      const dayEnd = endOfDay(today).toISOString();
+
+      const { data } = await supabase
+        .from("symptom_logs")
+        .select("id, intensity")
+        .eq("user_id", user.id)
+        .eq("symptom", "daily_mood")
+        .gte("logged_at", dayStart)
+        .lte("logged_at", dayEnd)
+        .order("logged_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (data) {
+        const mood = moodEmojis.find(m => m.value === data.intensity);
+        if (mood) {
+          setSelectedMood(mood);
+          setTodayMoodLogId(data.id);
+        }
+      }
+    };
+
+    loadTodayMood();
+  }, [user]);
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good morning";
@@ -92,11 +127,42 @@ const Home = () => {
     return "Good evening";
   };
 
-  const handleMoodSelect = (mood: typeof moodEmojis[0]) => {
+  const handleMoodSelect = async (mood: typeof moodEmojis[0]) => {
+    if (!user) return;
+
     setSelectedMood(mood);
-    toast.success("Thank you for sharing", {
-      description: `Feeling ${mood.label.toLowerCase()} is okay. We're here for you.`,
-    });
+
+    try {
+      if (todayMoodLogId) {
+        // Update existing log
+        await supabase
+          .from("symptom_logs")
+          .update({ intensity: mood.value })
+          .eq("id", todayMoodLogId);
+      } else {
+        // Create new log
+        const { data } = await supabase
+          .from("symptom_logs")
+          .insert({
+            user_id: user.id,
+            symptom: "daily_mood",
+            intensity: mood.value,
+          })
+          .select("id")
+          .single();
+
+        if (data) {
+          setTodayMoodLogId(data.id);
+        }
+      }
+
+      toast.success("Thank you for sharing", {
+        description: `Feeling ${mood.label.toLowerCase()} is okay. We're here for you.`,
+      });
+    } catch (error) {
+      console.error("Error saving mood:", error);
+      toast.error("Failed to save mood");
+    }
   };
 
   const handleChangeMood = () => {
