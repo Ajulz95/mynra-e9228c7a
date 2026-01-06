@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut } from 'lucide-react';
+import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProfileData {
@@ -236,10 +236,31 @@ export default function Profile() {
         </Card>
 
         {/* Privacy Notice */}
-        <div className="text-center text-sm text-muted-foreground mt-6 px-4">
+        <div className="text-center text-sm text-muted-foreground mt-6 px-4 pb-20">
           <p>
             🔒 Your personal details (name, email, boundaries) are private and never shown publicly.
           </p>
+        </div>
+      </div>
+
+      {/* Bottom Nav */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 safe-area-inset">
+        <div className="flex justify-center gap-8">
+          <Button
+            variant="ghost"
+            className="flex flex-col items-center gap-1 h-auto py-2"
+          >
+            <User className="w-5 h-5 text-primary" />
+            <span className="text-xs text-primary font-medium">Profile</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="flex flex-col items-center gap-1 h-auto py-2"
+            onClick={() => navigate('/discover')}
+          >
+            <Users className="w-5 h-5 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground">Discover</span>
+          </Button>
         </div>
       </div>
     </div>

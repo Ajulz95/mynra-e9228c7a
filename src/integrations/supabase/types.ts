@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      connection_requests: {
+        Row: {
+          created_at: string
+          id: string
+          recipient_id: string
+          requester_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recipient_id: string
+          requester_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recipient_id?: string
+          requester_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -157,7 +184,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      are_users_matched: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: boolean
+      }
+      get_connection_status: {
+        Args: { current_user_id: string; other_user_id: string }
+        Returns: string
+      }
     }
     Enums: {
       journey_stage:
