@@ -3,82 +3,89 @@ import { Heart, Shield, Users } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-background flex flex-col safe-area-inset">
+      {/* Status Bar Spacer */}
+      <div className="h-safe-top bg-background" />
+      
+      {/* Header - Mobile App Style */}
+      <header className="px-5 py-3 flex items-center justify-center relative">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <Heart className="w-4 h-4 text-primary-foreground" />
+          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-sm">
+            <Heart className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="text-xl font-semibold text-primary">Vestra</span>
+          <span className="text-2xl font-bold text-primary tracking-tight">Vestra</span>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main className="flex-1 flex flex-col justify-center px-6 pb-8">
-        <div className="max-w-md mx-auto w-full space-y-8">
-          {/* Illustration placeholder with calming visual */}
-          <div className="relative mx-auto w-48 h-48">
-            <div className="absolute inset-0 bg-secondary/20 rounded-full animate-pulse" />
-            <div className="absolute inset-4 bg-secondary/30 rounded-full" />
-            <div className="absolute inset-8 bg-secondary/50 rounded-full flex items-center justify-center">
-              <Users className="w-16 h-16 text-primary" />
+      {/* Hero Section - Optimized for Mobile */}
+      <main className="flex-1 flex flex-col justify-center px-5 pb-6">
+        <div className="w-full space-y-6">
+          {/* Illustration - Calming visual */}
+          <div className="relative mx-auto w-40 h-40">
+            <div className="absolute inset-0 bg-secondary/20 rounded-full" />
+            <div className="absolute inset-3 bg-secondary/30 rounded-full" />
+            <div className="absolute inset-6 bg-secondary/50 rounded-full flex items-center justify-center">
+              <Users className="w-14 h-14 text-primary" />
             </div>
           </div>
 
           {/* Welcome Message */}
-          <div className="text-center space-y-4">
-            <h1 className="text-3xl font-bold text-primary text-balance">
+          <div className="text-center space-y-3">
+            <h1 className="text-2xl font-bold text-primary leading-tight">
               You're Not Alone in This
             </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
+            <p className="text-muted-foreground text-base leading-relaxed px-2">
               Connect with peers who understand. Share your journey in a safe, 
               supportive space where healing happens together.
             </p>
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex items-center justify-center gap-6 py-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center justify-center gap-5 py-2">
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Shield className="w-4 h-4 text-secondary" />
               <span>Private & Secure</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Heart className="w-4 h-4 text-accent" />
               <span>Peer Support</span>
             </div>
           </div>
-
-          {/* CTA Buttons */}
-          <div className="space-y-3 pt-4">
-            <Button 
-              className="w-full h-14 text-lg font-medium bg-primary hover:bg-primary/90"
-              size="lg"
-            >
-              Get Started
-            </Button>
-            <Button 
-              variant="outline"
-              className="w-full h-14 text-lg font-medium border-primary text-primary hover:bg-primary/5"
-              size="lg"
-            >
-              Sign In
-            </Button>
-          </div>
-
-          {/* Reassurance text */}
-          <p className="text-center text-sm text-muted-foreground">
-            Your privacy matters. All conversations are encrypted and anonymous.
-          </p>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="px-6 py-4 text-center">
-        <p className="text-xs text-muted-foreground">
+      {/* Bottom Section - Fixed for Mobile */}
+      <div className="px-5 pb-6 space-y-3">
+        {/* CTA Buttons */}
+        <Button 
+          className="w-full h-14 text-base font-semibold bg-primary hover:bg-primary/90 rounded-xl shadow-lg"
+          size="lg"
+        >
+          Get Started
+        </Button>
+        <Button 
+          variant="outline"
+          className="w-full h-14 text-base font-semibold border-2 border-primary text-primary hover:bg-primary/5 rounded-xl"
+          size="lg"
+        >
+          Sign In
+        </Button>
+
+        {/* Reassurance text */}
+        <p className="text-center text-xs text-muted-foreground pt-2 px-4">
+          Your privacy matters. All conversations are encrypted and anonymous.
+        </p>
+      </div>
+
+      {/* Footer - Crisis notice */}
+      <footer className="px-5 pb-4 pt-2">
+        <p className="text-center text-xs text-muted-foreground/70">
           If you're in crisis, please contact a mental health professional or call your local emergency services.
         </p>
       </footer>
+      
+      {/* Safe Area Bottom Spacer */}
+      <div className="h-safe-bottom bg-background" />
     </div>
   );
 };
