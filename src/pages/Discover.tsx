@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Users, RefreshCw } from 'lucide-react';
 import PeerCard from '@/components/discover/PeerCard';
 import EmptyState from '@/components/discover/EmptyState';
+import NotificationBell from '@/components/notifications/NotificationBell';
 
 export interface PeerProfile {
   userId: string;
@@ -250,15 +251,18 @@ export default function Discover() {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-xl font-semibold">Discover</h1>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/10"
-            onClick={handleRefresh}
-            disabled={refreshing}
-          >
-            <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
-          </Button>
+          <div className="flex gap-1">
+            <NotificationBell />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/10"
+              onClick={handleRefresh}
+              disabled={refreshing}
+            >
+              <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
         </div>
         <p className="text-white/80 text-sm text-center">
           Find peers who share your experiences
