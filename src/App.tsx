@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Profile from "./pages/Profile";
+import Matches from "./pages/Matches";
 import Discover from "./pages/Discover";
 import Chat from "./pages/Chat";
 import Insights from "./pages/Insights";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/matches" element={<Matches />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/chat/:oderId" element={<Chat />} />
             <Route path="/insights" element={<Insights />} />
