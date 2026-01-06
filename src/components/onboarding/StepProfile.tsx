@@ -67,7 +67,7 @@ export default function StepProfile({ data, setData }: StepProfileProps) {
               className="px-3 py-2 bg-secondary/20 hover:bg-secondary/30 rounded-lg transition-colors"
               title="Generate random pseudonym"
             >
-              <Sparkles className="w-5 h-5 text-secondary" />
+              <Sparkles className="w-5 h-5 text-primary" />
             </button>
           </div>
           <p className="text-xs text-muted-foreground">
