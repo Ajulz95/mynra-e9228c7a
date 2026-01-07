@@ -29,8 +29,8 @@ const Index = () => {
       </header>
 
       {/* Hero Section - Optimized for Mobile */}
-      <main className="flex-1 flex flex-col justify-center px-5 pb-6">
-        <div className="w-full space-y-6">
+      <main className="flex-1 flex flex-col justify-center items-center px-5 pb-6">
+        <div className="w-full space-y-6 flex flex-col items-center">
           {/* Illustration - Calming visual with gentle float animation */}
           <div className="relative mx-auto w-40 h-40 animate-float">
             <div className="absolute inset-0 bg-secondary/20 rounded-full animate-breathe" />
