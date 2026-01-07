@@ -125,7 +125,7 @@ export default function Auth() {
             </div>
             <div>
               <CardTitle className="text-2xl font-semibold text-primary">
-                {isSignUp ? 'Join Vestra' : 'Welcome Back'}
+                {isSignUp ? 'Welcome to Vestra' : 'Welcome Back'}
               </CardTitle>
               <CardDescription className="text-muted-foreground mt-2">
                 {isSignUp 
