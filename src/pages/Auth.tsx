@@ -105,7 +105,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col safe-area-inset">
+    <div className="min-h-screen bg-background flex flex-col safe-area-inset animate-fade-in">
       <div className="p-4">
         <Button 
           variant="ghost" 

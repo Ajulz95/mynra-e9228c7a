@@ -245,7 +245,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col safe-area-inset">
+    <div className="min-h-screen bg-background flex flex-col safe-area-inset animate-fade-in">
       {/* Header */}
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-between">

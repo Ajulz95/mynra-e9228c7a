@@ -143,7 +143,7 @@ export default function Matches() {
   }
 
   return (
-    <div className="min-h-screen bg-background safe-area-inset">
+    <div className="min-h-screen bg-background safe-area-inset animate-fade-in">
       {/* Header */}
       <div className="bg-primary text-primary-foreground p-6">
         <div className="flex items-center gap-3">

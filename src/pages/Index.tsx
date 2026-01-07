@@ -15,7 +15,7 @@ const Index = () => {
   }, [user, loading, navigate]);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col safe-area-inset">
+    <div className="min-h-screen bg-background flex flex-col safe-area-inset animate-fade-in">
       {/* Status Bar Spacer */}
       <div className="h-safe-top bg-background" />
       
@@ -32,9 +32,9 @@ const Index = () => {
       {/* Hero Section - Optimized for Mobile */}
       <main className="flex-1 flex flex-col justify-center px-5 pb-6">
         <div className="w-full space-y-6">
-          {/* Illustration - Calming visual */}
-          <div className="relative mx-auto w-40 h-40">
-            <div className="absolute inset-0 bg-secondary/20 rounded-full" />
+          {/* Illustration - Calming visual with gentle float animation */}
+          <div className="relative mx-auto w-40 h-40 animate-float">
+            <div className="absolute inset-0 bg-secondary/20 rounded-full animate-breathe" />
             <div className="absolute inset-3 bg-secondary/30 rounded-full" />
             <div className="absolute inset-6 bg-secondary/50 rounded-full flex items-center justify-center">
               <Users className="w-14 h-14 text-primary" />
