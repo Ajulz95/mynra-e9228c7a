@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, ArrowLeft, UserPlus, Check, Loader2 } from 'lucide-react';
+import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, ArrowLeft, UserPlus, X, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BottomNav from '@/components/BottomNav';
 
@@ -116,10 +116,6 @@ export default function PeerProfile() {
     setSendingRequest(true);
     
     try {
-      // For mock peers, we'll just update the local state
-      // In production, this would send to the database with real user IDs
-      
-      // Simulate a slight delay for UX
       await new Promise(resolve => setTimeout(resolve, 500));
       
       setConnectionStatus('pending');
@@ -130,6 +126,30 @@ export default function PeerProfile() {
     } catch (error: any) {
       toast({
         title: 'Error sending request',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setSendingRequest(false);
+    }
+  };
+
+  const handleCancelRequest = async () => {
+    if (!user || !peerId || connectionStatus !== 'pending') return;
+    
+    setSendingRequest(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setConnectionStatus('none');
+      toast({
+        title: 'Request cancelled',
+        description: `Your connection request has been cancelled.`,
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error cancelling request',
         description: error.message,
         variant: 'destructive',
       });
@@ -197,19 +217,19 @@ export default function PeerProfile() {
           <CardContent className="p-4">
             <div className="flex gap-3">
               <Button 
-                className={`flex-1 ${connectionStatus === 'pending' ? 'bg-muted text-muted-foreground' : 'bg-primary hover:bg-primary/90'}`}
-                onClick={handleConnect}
-                disabled={connectionStatus !== 'none' || sendingRequest}
+                className={`flex-1 ${connectionStatus === 'pending' ? 'bg-destructive/10 text-destructive hover:bg-destructive/20 border border-destructive/30' : 'bg-primary hover:bg-primary/90'}`}
+                onClick={connectionStatus === 'pending' ? handleCancelRequest : handleConnect}
+                disabled={sendingRequest}
               >
                 {sendingRequest ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Sending...
+                    {connectionStatus === 'pending' ? 'Cancelling...' : 'Sending...'}
                   </>
                 ) : connectionStatus === 'pending' ? (
                   <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Request Sent
+                    <X className="w-4 h-4 mr-2" />
+                    Cancel Request
                   </>
                 ) : (
                   <>
