@@ -72,7 +72,7 @@ const Index = () => {
         <Button 
           className="w-full h-14 text-base font-semibold bg-primary hover:bg-primary/90 rounded-xl shadow-lg"
           size="lg"
-          onClick={() => navigate('/auth')}
+          onClick={() => navigate('/auth?mode=signup')}
         >
           Get Started
         </Button>
@@ -80,7 +80,7 @@ const Index = () => {
           variant="outline"
           className="w-full h-14 text-base font-semibold border-2 border-primary text-primary hover:bg-primary/5 rounded-xl"
           size="lg"
-          onClick={() => navigate('/auth')}
+          onClick={() => navigate('/auth?mode=signin')}
         >
           Sign In
         </Button>
