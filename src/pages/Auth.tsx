@@ -200,7 +200,7 @@ export default function Auth() {
                 {isSignUp ? 'Already have an account?' : "Don't have an account?"}
                 <Button
                   variant="link"
-                  className="text-secondary font-medium p-1"
+                  className="text-primary font-medium p-1"
                   onClick={() => {
                     setIsSignUp(!isSignUp);
                     setErrors({});
