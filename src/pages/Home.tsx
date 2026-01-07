@@ -268,7 +268,7 @@ const Home = () => {
             <Card
               key={peer.id}
               className="flex-shrink-0 w-40 border-0 shadow-sm bg-card cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => navigate("/discover")}
+              onClick={() => navigate(`/profile/${peer.id}`)}
             >
               <CardContent className="p-4">
                 <div className="flex flex-col items-center text-center">
