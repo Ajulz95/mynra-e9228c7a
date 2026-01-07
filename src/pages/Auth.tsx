@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Heart, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+import { VestraLogo } from '@/components/VestraLogo';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -121,8 +122,8 @@ export default function Auth() {
       <div className="flex-1 flex items-center justify-center px-6 pb-8">
         <Card className="w-full max-w-sm border-0 shadow-xl">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <Heart className="w-6 h-6 text-primary" />
+            <div className="mx-auto">
+              <VestraLogo size="lg" />
             </div>
             <div>
               <CardTitle className="text-2xl font-semibold text-primary">

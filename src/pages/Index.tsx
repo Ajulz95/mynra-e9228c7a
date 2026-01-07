@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Shield, Users } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { VestraLogo } from "@/components/VestraLogo";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -22,9 +23,7 @@ const Index = () => {
       {/* Header - Mobile App Style */}
       <header className="px-5 py-3 flex items-center justify-center relative">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-sm">
-            <Heart className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <VestraLogo size="md" />
           <span className="text-2xl font-bold text-primary tracking-tight">Vestra</span>
         </div>
       </header>
