@@ -160,7 +160,7 @@ export default function Profile() {
   const journeyInfo = profile.journeyStage ? journeyLabels[profile.journeyStage] : null;
 
   return (
-    <div className="min-h-screen bg-background safe-area-inset">
+    <div className="min-h-screen bg-background safe-area-inset animate-fade-in">
       {/* Header */}
       <div className="bg-primary text-white p-6 pb-16">
         <div className="flex items-center justify-between mb-6">

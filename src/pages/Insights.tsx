@@ -171,7 +171,7 @@ export default function Insights() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/5 safe-area-inset">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/5 safe-area-inset animate-fade-in">
       {/* Header */}
       <div className="bg-gradient-to-r from-primary to-primary/80 text-white p-6 pb-8">
         <div className="flex items-center justify-between mb-4">

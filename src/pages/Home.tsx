@@ -178,7 +178,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background pb-24 animate-fade-in">
       {/* Top Icons */}
       <div className="flex items-center justify-end gap-2 px-5 pt-4">
         <Button

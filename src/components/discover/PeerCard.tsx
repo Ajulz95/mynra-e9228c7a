@@ -62,7 +62,7 @@ export default function PeerCard({ peer, onConnect, onAccept }: PeerCardProps) {
   const displayBio = isMatched ? peer.bio : null;
 
   return (
-    <Card className={`overflow-hidden transition-all ${
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
       peer.sharedChallenges.length > 0 ? 'border-secondary/50' : 'border-border'
     }`}>
       <CardContent className="p-4">

@@ -224,7 +224,7 @@ export default function Chat() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col safe-area-inset">
+    <div className="min-h-screen bg-background flex flex-col safe-area-inset animate-fade-in">
       {/* Header */}
       <ChatHeader
         partner={partner}
