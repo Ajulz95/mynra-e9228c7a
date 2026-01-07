@@ -76,7 +76,7 @@ export default function Onboarding() {
         .maybeSingle();
 
       if (profile?.onboarding_completed) {
-        navigate('/profile');
+        navigate('/home');
         return;
       }
 
@@ -207,7 +207,7 @@ export default function Onboarding() {
         description: 'Your journey with Vestra begins now.',
       });
 
-      navigate('/profile');
+      navigate('/home');
     } catch (error: any) {
       toast({
         title: 'Error saving profile',
