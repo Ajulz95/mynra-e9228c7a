@@ -5,12 +5,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut, Users, ChevronRight } from 'lucide-react';
+import { User, Compass, Clock, CheckCircle, Heart, MessageCircle, Settings, LogOut, Users, ChevronRight, Pencil } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import BottomNav from '@/components/BottomNav';
+import EditProfileModal from '@/components/profile/EditProfileModal';
 
 interface ProfileData {
+  firstName: string | null;
   pseudonym: string;
   bio: string | null;
   journeyStage: string | null;
@@ -44,6 +46,7 @@ export default function Profile() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [matchCount, setMatchCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -63,7 +66,7 @@ export default function Profile() {
         // Fetch profile
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('pseudonym, bio, onboarding_completed')
+          .select('first_name, pseudonym, bio, onboarding_completed')
           .eq('user_id', user.id)
           .maybeSingle();
 
@@ -112,6 +115,7 @@ export default function Profile() {
         setMatchCount(mutualMatches.length);
 
         setProfile({
+          firstName: profileData.first_name,
           pseudonym: profileData.pseudonym,
           bio: profileData.bio,
           journeyStage: journeyData?.stage || null,
@@ -181,8 +185,18 @@ export default function Profile() {
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-accent/40 to-secondary/40 flex items-center justify-center ring-4 ring-white/20">
             <User className="w-10 h-10 text-white" />
           </div>
-          <div>
-            <h2 className="text-2xl font-bold">{profile.pseudonym}</h2>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h2 className="text-2xl font-bold">{profile.pseudonym}</h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white/80 hover:bg-white/10 h-8 w-8"
+                onClick={() => setEditModalOpen(true)}
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
+            </div>
             {journeyInfo && (
               <div className="flex items-center gap-2 mt-1 bg-white/10 px-2 py-1 rounded-full w-fit">
                 {journeyInfo.icon}
@@ -281,6 +295,20 @@ export default function Profile() {
       </div>
 
       <BottomNav />
+
+      {user && profile && (
+        <EditProfileModal
+          open={editModalOpen}
+          onOpenChange={setEditModalOpen}
+          userId={user.id}
+          currentData={profile}
+          onSave={() => {
+            setLoading(true);
+            // Re-trigger profile load
+            window.location.reload();
+          }}
+        />
+      )}
     </div>
   );
 }
