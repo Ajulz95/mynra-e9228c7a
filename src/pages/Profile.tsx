@@ -33,21 +33,11 @@ const supportLabels: Record<string, string> = {
 };
 
 const challengeEmojis: Record<string, string> = {
-  anxiety: '😰',
   depression: '😔',
-  neurodiversity: '🧠',
+  anxiety: '😰',
   adhd: '⚡',
-  autism: '🌈',
-  ocd: '🔄',
-  ptsd: '💔',
-  eating_disorders: '🍽️',
-  bipolar: '🎢',
   grief: '🕊️',
-  stress: '🔥',
-  relationships: '💑',
-  self_esteem: '💪',
-  sleep: '😴',
-  other: '✨',
+  ptsd: '💔',
 };
 
 export default function Profile() {

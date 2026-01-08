@@ -14,6 +14,8 @@ import Discover from "./pages/Discover";
 import Chat from "./pages/Chat";
 import Insights from "./pages/Insights";
 import Home from "./pages/Home";
+import Settings from "./pages/Settings";
+import BlockedPeers from "./pages/BlockedPeers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
             <Route path="/discover" element={<Discover />} />
             <Route path="/chat/:oderId" element={<Chat />} />
             <Route path="/insights" element={<Insights />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/blocked-peers" element={<BlockedPeers />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
