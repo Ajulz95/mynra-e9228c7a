@@ -85,9 +85,13 @@ export default function Chat() {
           journeyStage: journeyData?.stage || null,
         });
 
-        // Generate conversation ID (consistent ordering)
-        const sortedIds = [user.id, oderId].sort();
-        const convId = `${sortedIds[0]}_${sortedIds[1]}`;
+        // Generate conversation ID using database function
+        const { data: convIdData, error: convIdError } = await supabase
+          .rpc('get_conversation_id', { user1: user.id, user2: oderId });
+
+        if (convIdError) throw convIdError;
+        
+        const convId = convIdData as string;
         setConversationId(convId);
 
         // Load existing messages
