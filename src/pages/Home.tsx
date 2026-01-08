@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Lock, Phone, TrendingUp, PenLine, Bell, Settings } from "lucide-react";
+import { Lock, Phone, TrendingUp, TrendingDown, Minus, PenLine, Bell, Settings } from "lucide-react";
 import { toast } from "sonner";
-import { startOfDay, endOfDay } from "date-fns";
+import { startOfDay, endOfDay, subDays, format, eachDayOfInterval } from "date-fns";
 import BottomNav from "@/components/BottomNav";
 
 const moodEmojis = [
@@ -72,6 +72,7 @@ const Home = () => {
   const [displayName, setDisplayName] = useState("there");
   const [selectedMood, setSelectedMood] = useState<typeof moodEmojis[0] | null>(null);
   const [todayMoodLogId, setTodayMoodLogId] = useState<string | null>(null);
+  const [weeklyMoods, setWeeklyMoods] = useState<{ date: string; mood: number | null }[]>([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -119,6 +120,72 @@ const Home = () => {
 
     loadTodayMood();
   }, [user]);
+
+  // Load weekly mood data
+  useEffect(() => {
+    const loadWeeklyMoods = async () => {
+      if (!user) return;
+
+      const weekStart = subDays(new Date(), 6);
+      const today = new Date();
+
+      const { data } = await supabase
+        .from("symptom_logs")
+        .select("intensity, logged_at")
+        .eq("user_id", user.id)
+        .eq("symptom", "daily_mood")
+        .gte("logged_at", startOfDay(weekStart).toISOString())
+        .lte("logged_at", endOfDay(today).toISOString())
+        .order("logged_at", { ascending: true });
+
+      const last7Days = eachDayOfInterval({ start: weekStart, end: today });
+      
+      const dailyMoods = last7Days.map(day => {
+        const dayStr = format(day, 'yyyy-MM-dd');
+        const dayLogs = data?.filter(log => 
+          format(new Date(log.logged_at), 'yyyy-MM-dd') === dayStr
+        ) || [];
+        
+        const avgMood = dayLogs.length > 0
+          ? dayLogs.reduce((sum, log) => sum + (log.intensity || 0), 0) / dayLogs.length
+          : null;
+
+        return {
+          date: format(day, 'EEE'),
+          mood: avgMood,
+        };
+      });
+
+      setWeeklyMoods(dailyMoods);
+    };
+
+    loadWeeklyMoods();
+  }, [user, selectedMood]);
+
+  const { trend, averageMood } = useMemo(() => {
+    const moodsWithData = weeklyMoods.filter(d => d.mood !== null);
+    let trendDirection: 'up' | 'down' | 'stable' = 'stable';
+    
+    if (moodsWithData.length >= 2) {
+      const recentHalf = moodsWithData.slice(-Math.ceil(moodsWithData.length / 2));
+      const olderHalf = moodsWithData.slice(0, Math.floor(moodsWithData.length / 2));
+      
+      if (recentHalf.length > 0 && olderHalf.length > 0) {
+        const recentAvg = recentHalf.reduce((s, d) => s + (d.mood || 0), 0) / recentHalf.length;
+        const olderAvg = olderHalf.reduce((s, d) => s + (d.mood || 0), 0) / olderHalf.length;
+        
+        if (recentAvg - olderAvg > 0.3) trendDirection = 'up';
+        else if (olderAvg - recentAvg > 0.3) trendDirection = 'down';
+      }
+    }
+
+    const allMoods = weeklyMoods.filter(d => d.mood !== null).map(d => d.mood!);
+    const avg = allMoods.length > 0 
+      ? allMoods.reduce((s, m) => s + m, 0) / allMoods.length 
+      : 0;
+
+    return { trend: trendDirection, averageMood: avg };
+  }, [weeklyMoods]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -312,12 +379,54 @@ const Home = () => {
               </Button>
             </div>
             
-            {/* Mood Trend Placeholder */}
-            <div className="h-20 bg-muted/30 rounded-lg flex items-center justify-center mb-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <TrendingUp className="w-5 h-5" />
-                <span className="text-sm">Weekly mood trend</span>
-              </div>
+            {/* Weekly Mood Trend */}
+            <div className="mb-4">
+              {weeklyMoods.some(d => d.mood !== null) ? (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">This week</span>
+                    <div className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
+                      trend === 'up' ? 'bg-green-100 text-green-700' :
+                      trend === 'down' ? 'bg-orange-100 text-orange-700' :
+                      'bg-muted text-muted-foreground'
+                    }`}>
+                      {trend === 'up' && <TrendingUp className="w-3 h-3" />}
+                      {trend === 'down' && <TrendingDown className="w-3 h-3" />}
+                      {trend === 'stable' && <Minus className="w-3 h-3" />}
+                      <span className="capitalize">{trend}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-end justify-between gap-1 h-16">
+                    {weeklyMoods.map((day, i) => (
+                      <div key={i} className="flex flex-col items-center flex-1">
+                        <div className="flex-1 w-full flex items-end justify-center">
+                          {day.mood !== null ? (
+                            <div 
+                              className="w-3 rounded-t-sm bg-secondary"
+                              style={{ height: `${(day.mood / 5) * 100}%`, minHeight: '4px' }}
+                            />
+                          ) : (
+                            <div className="w-3 h-1 rounded-full bg-muted" />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-muted-foreground mt-1">{day.date}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-center">
+                    <span className="text-xs text-muted-foreground">
+                      Avg: {averageMood > 0 ? averageMood.toFixed(1) : '-'}/5
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-20 bg-muted/30 rounded-lg flex items-center justify-center">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <TrendingUp className="w-5 h-5" />
+                    <span className="text-sm">Log moods to see trends</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick Reflection */}
