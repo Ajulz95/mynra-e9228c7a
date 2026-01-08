@@ -160,9 +160,9 @@ export default function Profile() {
   const journeyInfo = profile.journeyStage ? journeyLabels[profile.journeyStage] : null;
 
   return (
-    <div className="min-h-screen bg-background safe-area-inset animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/5 safe-area-inset animate-fade-in">
       {/* Header */}
-      <div className="bg-primary text-white p-6 pb-16">
+      <div className="bg-gradient-to-br from-primary via-primary to-primary/80 text-white p-6 pb-16 rounded-b-3xl">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-xl font-semibold">My Profile</h1>
           <div className="flex gap-1">
@@ -188,15 +188,15 @@ export default function Profile() {
 
         {/* Avatar & Name */}
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-accent/40 to-secondary/40 flex items-center justify-center ring-4 ring-white/20">
             <User className="w-10 h-10 text-white" />
           </div>
           <div>
             <h2 className="text-2xl font-bold">{profile.pseudonym}</h2>
             {journeyInfo && (
-              <div className="flex items-center gap-2 mt-1 text-white/80">
+              <div className="flex items-center gap-2 mt-1 bg-white/10 px-2 py-1 rounded-full w-fit">
                 {journeyInfo.icon}
-                <span>{journeyInfo.label}</span>
+                <span className="text-sm">{journeyInfo.label}</span>
               </div>
             )}
           </div>
@@ -207,23 +207,25 @@ export default function Profile() {
       <div className="px-6 -mt-8 space-y-4 pb-8">
         {/* Matches Card */}
         <Card 
-          className="shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+          className="shadow-lg cursor-pointer hover:shadow-xl transition-shadow bg-gradient-to-r from-card to-accent/5 border-accent/20"
           onClick={() => navigate('/matches')}
         >
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/30 to-secondary/30 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-foreground">My Peers</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-semibold text-foreground">My Peers</h3>
+                  <p className="text-sm text-accent font-medium">
                     {matchCount} {matchCount === 1 ? 'match' : 'matches'}
                   </p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground" />
+              <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
+                <ChevronRight className="w-5 h-5 text-accent" />
+              </div>
             </div>
           </CardContent>
         </Card>

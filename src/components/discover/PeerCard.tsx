@@ -63,9 +63,9 @@ export default function PeerCard({ peer, onConnect, onAccept }: PeerCardProps) {
 
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
-      peer.sharedChallenges.length > 0 ? 'border-secondary/50' : 'border-border'
+      peer.sharedChallenges.length > 0 ? 'border-l-4 border-l-secondary border-secondary/30' : 'border-border'
     }`}>
-      <CardContent className="p-4">
+      <CardContent className={`p-4 ${peer.sharedChallenges.length > 0 ? 'bg-gradient-to-r from-secondary/5 to-transparent' : ''}`}>
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
@@ -102,16 +102,15 @@ export default function PeerCard({ peer, onConnect, onAccept }: PeerCardProps) {
 
         {/* Shared challenges highlight */}
         {peer.sharedChallenges.length > 0 && (
-          <div className="mb-3 p-2 bg-secondary/10 rounded-lg">
-            <p className="text-xs font-medium text-primary mb-2">
+          <div className="mb-3 p-3 bg-gradient-to-r from-secondary/15 to-accent/10 rounded-xl border border-secondary/20">
+            <p className="text-xs font-semibold text-primary mb-2">
               🤝 {peer.sharedChallenges.length} shared {peer.sharedChallenges.length === 1 ? 'experience' : 'experiences'}
             </p>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1.5">
               {peer.sharedChallenges.map((challenge) => (
                 <Badge
                   key={challenge}
-                  variant="secondary"
-                  className="text-xs bg-secondary/20"
+                  className="text-xs bg-secondary/30 text-primary border-0"
                 >
                   {challengeEmojis[challenge] || '✨'} {challenge.replace(/_/g, ' ')}
                 </Badge>

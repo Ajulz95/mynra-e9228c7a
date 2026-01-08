@@ -276,12 +276,14 @@ const Home = () => {
 
       {/* Daily Check-in */}
       <div className="px-5 pb-6">
-        <Card className="border-0 shadow-sm bg-card">
+        <Card className="border-0 shadow-sm bg-gradient-to-br from-card to-secondary/10">
           <CardContent className="py-4">
             {selectedMood ? (
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl">{selectedMood.emoji}</span>
+                  <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center">
+                    <span className="text-3xl">{selectedMood.emoji}</span>
+                  </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Today's Emotion</p>
                     <p className="font-bold text-foreground">{selectedMood.label}</p>
@@ -290,7 +292,7 @@ const Home = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-primary text-sm"
+                  className="text-accent font-semibold text-sm"
                   onClick={handleChangeMood}
                 >
                   Change
@@ -300,11 +302,17 @@ const Home = () => {
               <>
                 <p className="text-sm font-medium text-muted-foreground mb-3">Daily Check-in</p>
                 <div className="flex justify-between">
-                  {moodEmojis.map((mood) => (
+                  {moodEmojis.map((mood, index) => (
                     <button
                       key={mood.value}
                       onClick={() => handleMoodSelect(mood)}
-                      className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                      className={`flex flex-col items-center gap-1 p-2 rounded-xl hover:scale-105 transition-all ${
+                        index === 4 ? 'hover:bg-secondary/30' : 
+                        index === 3 ? 'hover:bg-secondary/20' :
+                        index === 2 ? 'hover:bg-accent/20' :
+                        index === 1 ? 'hover:bg-accent/30' :
+                        'hover:bg-destructive/10'
+                      }`}
                     >
                       <span className="text-2xl">{mood.emoji}</span>
                       <span className="text-xs text-muted-foreground">{mood.label}</span>
@@ -343,7 +351,7 @@ const Home = () => {
                   <p className="font-medium text-foreground text-sm truncate w-full">
                     {peer.pseudonym}
                   </p>
-                  <p className="text-xs text-secondary font-semibold mt-1">
+                  <p className="text-xs text-accent font-semibold mt-1">
                     {peer.matchScore}% Match
                   </p>
                   <div className="flex flex-wrap gap-1 mt-2 justify-center">
@@ -386,8 +394,8 @@ const Home = () => {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">This week</span>
                     <div className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
-                      trend === 'up' ? 'bg-green-100 text-green-700' :
-                      trend === 'down' ? 'bg-orange-100 text-orange-700' :
+                      trend === 'up' ? 'bg-secondary/30 text-primary' :
+                      trend === 'down' ? 'bg-accent/20 text-accent' :
                       'bg-muted text-muted-foreground'
                     }`}>
                       {trend === 'up' && <TrendingUp className="w-3 h-3" />}
@@ -402,7 +410,11 @@ const Home = () => {
                         <div className="flex-1 w-full flex items-end justify-center">
                           {day.mood !== null ? (
                             <div 
-                              className="w-3 rounded-t-sm bg-secondary"
+                              className={`w-3 rounded-t-sm ${
+                                day.mood >= 4 ? 'bg-secondary' :
+                                day.mood >= 3 ? 'bg-accent' :
+                                'bg-accent/60'
+                              }`}
                               style={{ height: `${(day.mood / 5) * 100}%`, minHeight: '4px' }}
                             />
                           ) : (
@@ -420,9 +432,9 @@ const Home = () => {
                   </div>
                 </div>
               ) : (
-                <div className="h-20 bg-muted/30 rounded-lg flex items-center justify-center">
+                <div className="h-20 bg-gradient-to-r from-secondary/10 to-accent/10 rounded-lg flex items-center justify-center">
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <TrendingUp className="w-5 h-5" />
+                    <TrendingUp className="w-5 h-5 text-secondary" />
                     <span className="text-sm">Log moods to see trends</span>
                   </div>
                 </div>
