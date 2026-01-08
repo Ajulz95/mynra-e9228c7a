@@ -7,21 +7,11 @@ interface StepChallengesProps {
 }
 
 const challengeOptions = [
-  { value: 'anxiety', label: 'Anxiety', emoji: '😰' },
   { value: 'depression', label: 'Depression', emoji: '😔' },
-  { value: 'neurodiversity', label: 'Neurodiversity', emoji: '🧠' },
+  { value: 'anxiety', label: 'Anxiety', emoji: '😰' },
   { value: 'adhd', label: 'ADHD', emoji: '⚡' },
-  { value: 'autism', label: 'Autism', emoji: '🌈' },
-  { value: 'ocd', label: 'OCD', emoji: '🔄' },
-  { value: 'ptsd', label: 'PTSD / Trauma', emoji: '💔' },
-  { value: 'eating_disorders', label: 'Eating Disorders', emoji: '🍽️' },
-  { value: 'bipolar', label: 'Bipolar', emoji: '🎢' },
   { value: 'grief', label: 'Grief & Loss', emoji: '🕊️' },
-  { value: 'stress', label: 'Stress & Burnout', emoji: '🔥' },
-  { value: 'relationships', label: 'Relationships', emoji: '💑' },
-  { value: 'self_esteem', label: 'Self-Esteem', emoji: '💪' },
-  { value: 'sleep', label: 'Sleep Issues', emoji: '😴' },
-  { value: 'other', label: 'Other', emoji: '✨' },
+  { value: 'ptsd', label: 'PTSD / Trauma', emoji: '💔' },
 ];
 
 export default function StepChallenges({ data, setData }: StepChallengesProps) {
