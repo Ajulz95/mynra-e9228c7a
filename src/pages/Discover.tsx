@@ -230,10 +230,10 @@ export default function Discover() {
     }
   };
 
-  if (authLoading || loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-primary">Finding peers...</div>
+        <div className="animate-pulse text-primary">Loading...</div>
       </div>
     );
   }
@@ -259,15 +259,22 @@ export default function Discover() {
               size="icon"
               className="text-white hover:bg-white/10"
               onClick={handleRefresh}
-              disabled={refreshing}
+              disabled={refreshing || loading}
             >
-              <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-5 h-5 ${refreshing || loading ? 'animate-spin' : ''}`} />
             </Button>
           </div>
         </div>
         <p className="text-white/80 text-sm text-center">
           Find peers who share your experiences
         </p>
+        {/* Inline loading indicator */}
+        {loading && (
+          <div className="mt-4 flex items-center justify-center gap-2 text-white/90 text-sm">
+            <RefreshCw className="w-4 h-4 animate-spin" />
+            <span>Finding peers...</span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
