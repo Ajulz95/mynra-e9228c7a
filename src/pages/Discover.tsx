@@ -239,9 +239,9 @@ export default function Discover() {
   }
 
   return (
-    <div className="min-h-screen bg-background safe-area-inset animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/5 safe-area-inset animate-fade-in">
       {/* Header */}
-      <div className="bg-primary text-white p-4 pb-6">
+      <div className="bg-gradient-to-r from-primary to-primary/80 text-white p-4 pb-8 rounded-b-3xl">
         <div className="flex items-center justify-between mb-4">
           <Button
             variant="ghost"

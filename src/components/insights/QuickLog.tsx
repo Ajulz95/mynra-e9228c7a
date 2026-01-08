@@ -58,24 +58,31 @@ export default function QuickLog({ onComplete }: QuickLogProps) {
   };
 
   return (
-    <Card className="shadow-lg border-0 bg-white">
+    <Card className="shadow-lg border-0 bg-card">
       <CardContent className="p-4">
         <p className="text-sm font-medium text-foreground mb-3">
           How are you feeling right now?
         </p>
         
-        <div className="flex justify-between gap-1 mb-3">
+        <div className="flex justify-between gap-1.5 mb-3">
           {moodOptions.map((option) => {
             const Icon = option.icon;
             const isSelected = selectedMood === option.value;
+            const bgColors = [
+              'bg-destructive/10 hover:bg-destructive/20',
+              'bg-accent/15 hover:bg-accent/25', 
+              'bg-accent/10 hover:bg-accent/20',
+              'bg-secondary/15 hover:bg-secondary/25',
+              'bg-secondary/20 hover:bg-secondary/30'
+            ];
             return (
               <button
                 key={option.value}
                 onClick={() => setSelectedMood(option.value)}
                 className={`flex-1 p-3 rounded-xl transition-all flex flex-col items-center gap-1 ${
                   isSelected 
-                    ? 'bg-primary/10 ring-2 ring-primary' 
-                    : 'bg-muted/50 hover:bg-muted'
+                    ? 'bg-gradient-to-b from-primary/20 to-primary/10 ring-2 ring-primary shadow-sm' 
+                    : bgColors[option.value - 1]
                 }`}
               >
                 <Icon className={`w-6 h-6 ${isSelected ? 'text-primary' : option.color}`} />
@@ -92,7 +99,7 @@ export default function QuickLog({ onComplete }: QuickLogProps) {
             onClick={handleQuickSave}
             disabled={saving}
             size="sm"
-            className="w-full bg-secondary hover:bg-secondary/90"
+            className="w-full bg-gradient-to-r from-secondary to-secondary/80 hover:from-secondary/90 hover:to-secondary/70"
           >
             {saving ? 'Saving...' : 'Log Mood'}
           </Button>

@@ -81,16 +81,18 @@ export default function MoodTrends({ entries }: MoodTrendsProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="border-secondary/20">
+      <CardHeader className="bg-gradient-to-r from-secondary/5 to-transparent rounded-t-lg">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-secondary" />
+            <div className="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-secondary" />
+            </div>
             Mood Trends
           </CardTitle>
-          <div className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full ${
-            trend === 'up' ? 'bg-green-100 text-green-700' :
-            trend === 'down' ? 'bg-orange-100 text-orange-700' :
+          <div className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-full font-medium ${
+            trend === 'up' ? 'bg-secondary/20 text-primary' :
+            trend === 'down' ? 'bg-accent/20 text-accent' :
             'bg-muted text-muted-foreground'
           }`}>
             {trend === 'up' && <TrendingUp className="w-3 h-3" />}
