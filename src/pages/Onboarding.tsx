@@ -37,6 +37,7 @@ const TOTAL_STEPS = 5;
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [data, setData] = useState<OnboardingData>({
     journeyStage: null,
     challenges: [],
@@ -59,16 +60,15 @@ export default function Onboarding() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (loading) return; // Wait for auth to finish loading
+    
+    if (!user) {
       navigate('/auth');
+      return;
     }
-  }, [user, loading, navigate]);
 
-  useEffect(() => {
-    // Load existing profile data
+    // Load existing profile data only once
     const loadProfile = async () => {
-      if (!user) return;
-
       const { data: profile } = await supabase
         .from('profiles')
         .select('pseudonym, onboarding_completed')
@@ -86,10 +86,12 @@ export default function Onboarding() {
           profile: { ...prev.profile, pseudonym: profile.pseudonym }
         }));
       }
+      
+      setIsInitialized(true);
     };
 
     loadProfile();
-  }, [user, navigate]);
+  }, [user, loading, navigate]);
 
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
@@ -219,7 +221,7 @@ export default function Onboarding() {
     }
   };
 
-  if (loading) {
+  if (loading || !isInitialized) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-pulse text-primary">Loading...</div>
