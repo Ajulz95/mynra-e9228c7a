@@ -209,7 +209,7 @@ export default function EditProfileModal({
         <div className="space-y-6 py-4">
           {/* First Name */}
           <div className="space-y-2">
-            <Label htmlFor="firstName">First Name (Private)</Label>
+            <Label htmlFor="firstName">Full Name (Private)</Label>
             <Input
               id="firstName"
               placeholder="Your first name"
