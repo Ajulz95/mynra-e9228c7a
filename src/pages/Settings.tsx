@@ -393,9 +393,9 @@ export default function Settings() {
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                 <FileText className="w-5 h-5 text-primary" />
               </div>
-              <div className="text-left">
-                <span className="font-medium text-foreground block">Export Insights for Clinician</span>
-                <span className="text-xs text-muted-foreground">Download your journal and mood data as PDF</span>
+              <div className="text-left flex-1 min-w-0">
+                <span className="font-medium text-foreground block truncate">Export Insights for Clinician</span>
+                <span className="text-xs text-muted-foreground block truncate">Download your journal and mood data as PDF</span>
               </div>
             </Button>
 
