@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,14 +18,73 @@ import {
   Palette,
   Layers,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Download,
+  Loader2
 } from 'lucide-react';
 
 export default function CaseStudy() {
   const navigate = useNavigate();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExportPDF = async () => {
+    if (!contentRef.current) return;
+    
+    setIsExporting(true);
+    
+    try {
+      const html2pdf = (await import('html2pdf.js')).default;
+      
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: 'Mynra-Case-Study.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait' 
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      await html2pdf().set(opt).from(contentRef.current).save();
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Fixed Export Button */}
+      <div className="fixed top-4 right-4 z-50 print:hidden">
+        <Button
+          onClick={handleExportPDF}
+          disabled={isExporting}
+          className="bg-accent hover:bg-accent/90 text-white shadow-lg"
+        >
+          {isExporting ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Exporting...
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
+            </>
+          )}
+        </Button>
+      </div>
+
+      <div ref={contentRef}>
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white">
         <div className="max-w-4xl mx-auto px-6 py-12">
@@ -564,6 +624,7 @@ export default function CaseStudy() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </div>
   );
