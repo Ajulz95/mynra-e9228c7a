@@ -40,7 +40,20 @@ export default function DailyChallenges() {
   const [loading, setLoading] = useState(true);
   const [celebratingId, setCelebratingId] = useState<string | null>(null);
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    const stored = localStorage.getItem('dailyChallengesDismissed');
+    if (stored) {
+      const { date } = JSON.parse(stored);
+      return date === new Date().toISOString().split('T')[0];
+    }
+    return false;
+  });
+
+  const handleDismiss = () => {
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('dailyChallengesDismissed', JSON.stringify({ date: today }));
+    setDismissed(true);
+  };
 
   useEffect(() => {
     if (user) {
@@ -290,7 +303,7 @@ export default function DailyChallenges() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setDismissed(true)}
+              onClick={handleDismiss}
               className="mt-4 text-muted-foreground hover:text-foreground"
             >
               <X className="w-4 h-4 mr-1" />
