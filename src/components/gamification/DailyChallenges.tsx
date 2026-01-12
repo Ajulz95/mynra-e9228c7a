@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Wind, Sun, Droplets, Heart, Flame, Trophy, Sparkles } from 'lucide-react';
+import { Wind, Sun, Droplets, Heart, Flame, Trophy, Sparkles, CheckCircle2, Moon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -143,6 +143,7 @@ export default function DailyChallenges() {
 
   const completedCount = completedToday.size;
   const totalCount = challenges.length;
+  const allCompleted = totalCount > 0 && completedCount >= totalCount;
 
   if (loading) {
     return (
@@ -256,49 +257,85 @@ export default function DailyChallenges() {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-2 pb-4">
-        {challenges.map((challenge) => {
-          const Icon = iconMap[challenge.icon] || Heart;
-          const isCompleted = completedToday.has(challenge.id);
-          const isCelebrating = celebratingId === challenge.id;
-
-          return (
+      <CardContent className="pb-4">
+        {allCompleted ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-6"
+          >
             <motion.div
-              key={challenge.id}
-              animate={isCelebrating ? { scale: [1, 1.02, 1] } : {}}
-              transition={{ duration: 0.3 }}
-              className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer ${
-                isCompleted 
-                  ? 'bg-primary/15 border border-primary/30' 
-                  : 'bg-background/60 hover:bg-background/80 border border-transparent'
-              }`}
-              onClick={() => !isCompleted && handleChallengeComplete(challenge.id, challenge.points)}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+              className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center"
             >
-              <div className={`p-2 rounded-full transition-colors ${
-                isCompleted ? 'bg-primary/30' : 'bg-muted'
-              }`}>
-                <Icon className={`w-4 h-4 ${isCompleted ? 'text-primary' : 'text-muted-foreground'}`} />
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium ${isCompleted ? 'line-through text-muted-foreground' : ''}`}>
-                  {challenge.title}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">{challenge.description}</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className={`text-xs font-medium ${isCompleted ? 'text-primary' : 'text-muted-foreground'}`}>
-                  +{challenge.points}
-                </span>
-                <Checkbox 
-                  checked={isCompleted}
-                  className="pointer-events-none data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                />
-              </div>
+              <CheckCircle2 className="w-8 h-8 text-primary" />
             </motion.div>
-          );
-        })}
+            <h3 className="text-lg font-semibold text-foreground mb-1">
+              All done for today! 🎉
+            </h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              You've completed all your self-care tasks. Great job taking care of yourself!
+            </p>
+            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <Moon className="w-4 h-4" />
+              <span>New tasks unlock tomorrow</span>
+            </div>
+            {stats && (
+              <div className="mt-4 pt-4 border-t border-border/50">
+                <p className="text-sm text-muted-foreground">
+                  Today you earned <span className="font-semibold text-primary">{totalCount * 10} points</span>
+                </p>
+              </div>
+            )}
+          </motion.div>
+        ) : (
+          <div className="space-y-2">
+            {challenges.map((challenge) => {
+              const Icon = iconMap[challenge.icon] || Heart;
+              const isCompleted = completedToday.has(challenge.id);
+              const isCelebrating = celebratingId === challenge.id;
+
+              return (
+                <motion.div
+                  key={challenge.id}
+                  animate={isCelebrating ? { scale: [1, 1.02, 1] } : {}}
+                  transition={{ duration: 0.3 }}
+                  className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer ${
+                    isCompleted 
+                      ? 'bg-primary/15 border border-primary/30' 
+                      : 'bg-background/60 hover:bg-background/80 border border-transparent'
+                  }`}
+                  onClick={() => !isCompleted && handleChallengeComplete(challenge.id, challenge.points)}
+                >
+                  <div className={`p-2 rounded-full transition-colors ${
+                    isCompleted ? 'bg-primary/30' : 'bg-muted'
+                  }`}>
+                    <Icon className={`w-4 h-4 ${isCompleted ? 'text-primary' : 'text-muted-foreground'}`} />
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-medium ${isCompleted ? 'line-through text-muted-foreground' : ''}`}>
+                      {challenge.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">{challenge.description}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-medium ${isCompleted ? 'text-primary' : 'text-muted-foreground'}`}>
+                      +{challenge.points}
+                    </span>
+                    <Checkbox 
+                      checked={isCompleted}
+                      className="pointer-events-none data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
