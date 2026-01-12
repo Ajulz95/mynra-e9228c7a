@@ -247,31 +247,31 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24 animate-fade-in">
-      {/* Top Icons */}
-      <div className="flex items-center justify-end gap-2 px-5 pt-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground hover:text-foreground"
-          onClick={() => navigate("/profile")}
-        >
-          <Bell className="w-5 h-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground hover:text-foreground"
-          onClick={() => navigate("/profile")}
-        >
-          <Settings className="w-5 h-5" />
-        </Button>
-      </div>
-
       {/* Header Section */}
-      <div className="px-5 pb-4">
-        <h1 className="text-2xl font-bold text-foreground">
-          {getGreeting()}, {displayName}
-        </h1>
+      <div className="px-5 pt-4 pb-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-foreground">
+            {getGreeting()}, {displayName}
+          </h1>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => navigate("/profile")}
+            >
+              <Bell className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => navigate("/settings")}
+            >
+              <Settings className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
         <p className="text-muted-foreground text-sm mt-1">How are you feeling today?</p>
       </div>
 
