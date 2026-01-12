@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Trophy, Flame, Star, Target, Calendar, TrendingUp, Award } from 'lucide-react';
+import { Trophy, Flame, Star, Calendar, Award, ArrowLeft } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -21,7 +23,8 @@ interface WeeklyCompletion {
   count: number;
 }
 
-export default function Challenges() {
+export default function SelfCare() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [stats, setStats] = useState<GamificationStats | null>(null);
   const [weeklyData, setWeeklyData] = useState<WeeklyCompletion[]>([]);
@@ -110,6 +113,15 @@ export default function Challenges() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md mx-auto"
         >
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/activities')}
+            className="mb-3 -ml-2 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4 mr-1" />
+            Back to Activities
+          </Button>
           <h1 className="text-2xl font-bold mb-2">Self-Care Journey</h1>
           <p className="text-muted-foreground text-sm">
             Small steps, big impact. Track your daily wellness habits.
