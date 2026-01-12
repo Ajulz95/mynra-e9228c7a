@@ -201,30 +201,26 @@ export default function DailyChallenges() {
       </AnimatePresence>
 
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-primary/20 rounded-full">
-              <Heart className="w-4 h-4 text-primary" />
-            </div>
-            <CardTitle className="text-lg">Daily Self-Care</CardTitle>
+        <div className="flex items-center gap-2">
+          <div className="p-2 bg-primary/20 rounded-full">
+            <Heart className="w-4 h-4 text-primary" />
           </div>
-          <div className="flex items-center gap-3">
-            {stats && (
-              <>
-                <Badge variant="secondary" className="bg-primary/20 text-primary border-0 gap-1">
-                  <Trophy className="w-3 h-3" />
-                  {stats.total_points} pts
-                </Badge>
-                {stats.current_streak > 0 && (
-                  <Badge variant="secondary" className="bg-orange-500/20 text-orange-600 border-0 gap-1">
-                    <Flame className="w-3 h-3" />
-                    {stats.current_streak} day{stats.current_streak > 1 ? 's' : ''}
-                  </Badge>
-                )}
-              </>
+          <CardTitle className="text-lg">Daily Self-Care</CardTitle>
+        </div>
+        {stats && (
+          <div className="flex items-center gap-2 mt-2">
+            <Badge variant="secondary" className="bg-primary/20 text-primary border-0 gap-1">
+              <Trophy className="w-3 h-3" />
+              {stats.total_points} pts
+            </Badge>
+            {stats.current_streak > 0 && (
+              <Badge variant="secondary" className="bg-orange-500/20 text-orange-600 border-0 gap-1">
+                <Flame className="w-3 h-3" />
+                {stats.current_streak} day{stats.current_streak > 1 ? 's' : ''}
+              </Badge>
             )}
           </div>
-        </div>
+        )}
         
         {/* Welcome back message */}
         <AnimatePresence>
