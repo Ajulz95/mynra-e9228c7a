@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Wind, Sun, Droplets, Heart, Flame, Trophy, Sparkles, CheckCircle2, Moon } from 'lucide-react';
+import { Wind, Sun, Droplets, Heart, Flame, Trophy, Sparkles, CheckCircle2, Moon, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -39,6 +40,7 @@ export default function DailyChallenges() {
   const [loading, setLoading] = useState(true);
   const [celebratingId, setCelebratingId] = useState<string | null>(null);
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -258,11 +260,11 @@ export default function DailyChallenges() {
       </CardHeader>
 
       <CardContent className="pb-4">
-        {allCompleted ? (
+        {allCompleted && !dismissed ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-6"
+            className="text-center py-6 relative"
           >
             <motion.div
               initial={{ scale: 0 }}
@@ -289,8 +291,17 @@ export default function DailyChallenges() {
                 </p>
               </div>
             )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setDismissed(true)}
+              className="mt-4 text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-4 h-4 mr-1" />
+              Close
+            </Button>
           </motion.div>
-        ) : (
+        ) : allCompleted && dismissed ? null : (
           <div className="space-y-2">
             {challenges.map((challenge) => {
               const Icon = iconMap[challenge.icon] || Heart;
