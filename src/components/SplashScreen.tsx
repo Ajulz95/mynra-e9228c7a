@@ -12,7 +12,7 @@ export function SplashScreen({ onComplete, duration = 1000 }: SplashScreenProps)
   useEffect(() => {
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, duration - 300);
+    }, duration - 500);
 
     const completeTimer = setTimeout(() => {
       onComplete();
@@ -26,8 +26,8 @@ export function SplashScreen({ onComplete, duration = 1000 }: SplashScreenProps)
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-primary via-primary/95 to-primary/90 transition-opacity duration-300 ${
-        isExiting ? 'opacity-0' : 'opacity-100'
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-primary via-primary/95 to-primary/90 transition-all duration-500 ease-out ${
+        isExiting ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
       }`}
     >
       {/* Animated Background Circles */}

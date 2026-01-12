@@ -18,7 +18,7 @@ const Index = () => {
   }, [user, loading, navigate, showSplash]);
 
   if (showSplash) {
-    return <SplashScreen onComplete={() => setShowSplash(false)} duration={4000} />;
+    return <SplashScreen onComplete={() => setShowSplash(false)} duration={2000} />;
   }
 
   return (
