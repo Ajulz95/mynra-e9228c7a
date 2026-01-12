@@ -234,7 +234,7 @@ export default function Chat() {
         partner={partner}
         isVoiceCallUnlocked={isVoiceCallUnlocked}
         messagesUntilUnlock={messagesUntilUnlock}
-        onBack={() => navigate('/discover')}
+        onBack={() => navigate(-1)}
         onReport={() => setShowReport(true)}
         onBoundary={() => setShowBoundary(true)}
       />
