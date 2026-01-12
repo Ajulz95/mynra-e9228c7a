@@ -16,7 +16,8 @@ import Insights from "./pages/Insights";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import BlockedPeers from "./pages/BlockedPeers";
-import Challenges from "./pages/Challenges";
+import Activities from "./pages/Activities";
+import SelfCare from "./pages/SelfCare";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,7 +42,8 @@ const App = () => (
             <Route path="/insights" element={<Insights />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/blocked-peers" element={<BlockedPeers />} />
-            <Route path="/challenges" element={<Challenges />} />
+            <Route path="/activities" element={<Activities />} />
+            <Route path="/activities/self-care" element={<SelfCare />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
