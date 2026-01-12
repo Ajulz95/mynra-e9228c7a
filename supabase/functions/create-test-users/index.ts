@@ -8,7 +8,7 @@ const corsHeaders = {
 
 const testProfiles = [
   {
-    email: "test1@vestra.app",
+    email: "test1@mynra.app",
     password: "testpass123",
     pseudonym: "CalmExplorer42",
     bio: "Finding my way through anxiety one day at a time. Love hiking and journaling.",
@@ -22,7 +22,7 @@ const testProfiles = [
     }
   },
   {
-    email: "test2@vestra.app",
+    email: "test2@mynra.app",
     password: "testpass123",
     pseudonym: "BraveHeart88",
     bio: "Post-diagnosis journey with ADHD. Learning to embrace my neurodivergent brain!",
@@ -36,7 +36,7 @@ const testProfiles = [
     }
   },
   {
-    email: "test3@vestra.app",
+    email: "test3@mynra.app",
     password: "testpass123",
     pseudonym: "GentleSoul23",
     bio: "Supporting my partner through their mental health journey. Here to learn and connect.",
@@ -50,7 +50,7 @@ const testProfiles = [
     }
   },
   {
-    email: "test4@vestra.app",
+    email: "test4@mynra.app",
     password: "testpass123",
     pseudonym: "HopefulWanderer",
     bio: "Awaiting assessment for autism. The waiting is hard but I'm hopeful.",
@@ -64,7 +64,7 @@ const testProfiles = [
     }
   },
   {
-    email: "test5@vestra.app",
+    email: "test5@mynra.app",
     password: "testpass123",
     pseudonym: "SereneDreamer",
     bio: "Living with depression and finding small joys every day. Coffee enthusiast ☕",

@@ -17,7 +17,7 @@ export default function EmptyState() {
       </h3>
       
       <p className="text-muted-foreground max-w-xs">
-        You're one of the first here! As more people join Vestra, 
+        You're one of the first here! As more people join Mynra, 
         you'll find peers who share your experiences.
       </p>
 

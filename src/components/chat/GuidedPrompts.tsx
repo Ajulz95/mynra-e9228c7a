@@ -13,7 +13,7 @@ const prompts = [
     items: [
       "Hi! I noticed we share some similar experiences. How are you doing today?",
       "What's been helping you cope lately?",
-      "I'm glad we matched! What brought you to Vestra?",
+      "I'm glad we matched! What brought you to Mynra?",
     ]
   },
   {
