@@ -1,19 +1,25 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, Shield, Users } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MynraLogo } from "@/components/MynraLogo";
+import { SplashScreen } from "@/components/SplashScreen";
 
 const Index = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    if (!loading && user) {
+    if (!loading && user && !showSplash) {
       navigate('/home');
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, showSplash]);
+
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} duration={1000} />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col safe-area-inset animate-fade-in">
