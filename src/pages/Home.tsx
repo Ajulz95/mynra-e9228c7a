@@ -249,8 +249,8 @@ const Home = () => {
     <div className="min-h-screen bg-background pb-24 animate-fade-in">
       {/* Header Section */}
       <div className="px-5 pt-4 pb-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-foreground">
+        <div className="flex items-center justify-between gap-2">
+          <h1 className="text-xl font-bold text-foreground truncate">
             {getGreeting()}, {displayName}
           </h1>
           <div className="flex items-center gap-1">
