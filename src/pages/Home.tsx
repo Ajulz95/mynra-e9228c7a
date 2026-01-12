@@ -9,6 +9,7 @@ import { Lock, Phone, TrendingUp, TrendingDown, Minus, PenLine, Bell, Settings }
 import { toast } from "sonner";
 import { startOfDay, endOfDay, subDays, format, eachDayOfInterval } from "date-fns";
 import BottomNav from "@/components/BottomNav";
+import DailyChallenges from "@/components/gamification/DailyChallenges";
 
 const moodEmojis = [
   { emoji: "😢", label: "Sad", value: 1 },
@@ -369,6 +370,11 @@ const Home = () => {
             </Card>
           ))}
         </div>
+      </div>
+
+      {/* Daily Self-Care Challenges */}
+      <div className="px-5 pb-6">
+        <DailyChallenges />
       </div>
 
       {/* Your Journey - Insights Widget */}
