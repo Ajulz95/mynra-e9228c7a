@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
-import { VestraLogo } from '@/components/VestraLogo';
+import { MynraLogo } from '@/components/MynraLogo';
 
 const authSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -78,7 +78,7 @@ export default function Auth() {
           }
         } else {
           toast({
-            title: 'Welcome to Vestra!',
+            title: 'Welcome to Mynra!',
             description: 'Your account has been created successfully.',
           });
         }
@@ -123,11 +123,11 @@ export default function Auth() {
         <Card className="w-full max-w-sm border-0 shadow-xl">
           <CardHeader className="text-center space-y-4">
             <div className="mx-auto">
-              <VestraLogo size="lg" />
+              <MynraLogo size="lg" />
             </div>
             <div>
               <CardTitle className="text-2xl font-semibold text-primary">
-                {isSignUp ? 'Welcome to Vestra' : 'Welcome Back'}
+                {isSignUp ? 'Welcome to Mynra' : 'Welcome Back'}
               </CardTitle>
               <CardDescription className="text-muted-foreground mt-2">
                 {isSignUp 

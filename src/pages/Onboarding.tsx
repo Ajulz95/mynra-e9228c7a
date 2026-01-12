@@ -206,7 +206,7 @@ export default function Onboarding() {
 
       toast({
         title: 'Profile Created!',
-        description: 'Your journey with Vestra begins now.',
+        description: 'Your journey with Mynra begins now.',
       });
 
       navigate('/home');

@@ -466,7 +466,7 @@ export default function Settings() {
 
         {/* App Info */}
         <div className="text-center pt-4 pb-8">
-          <p className="text-xs text-muted-foreground">Vestra v1.0.0</p>
+          <p className="text-xs text-muted-foreground">Mynra v1.0.0</p>
           <p className="text-xs text-muted-foreground mt-1">Made with care for your wellbeing</p>
         </div>
       </div>

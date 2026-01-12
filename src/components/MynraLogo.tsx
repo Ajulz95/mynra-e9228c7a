@@ -1,6 +1,6 @@
-import vestraLogo from '@/assets/vestra-logo.svg';
+import mynraLogo from '@/assets/mynra-logo.svg';
 
-interface VestraLogoProps {
+interface MynraLogoProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
@@ -11,11 +11,11 @@ const sizeMap = {
   lg: 'w-12 h-12',
 };
 
-export function VestraLogo({ size = 'md', className = '' }: VestraLogoProps) {
+export function MynraLogo({ size = 'md', className = '' }: MynraLogoProps) {
   return (
     <img 
-      src={vestraLogo} 
-      alt="Vestra logo" 
+      src={mynraLogo} 
+      alt="Mynra logo" 
       className={`${sizeMap[size]} ${className}`}
     />
   );
