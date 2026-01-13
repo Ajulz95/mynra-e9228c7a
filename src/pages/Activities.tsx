@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Gamepad2, Brain, Music, Palette, ChevronRight } from 'lucide-react';
+import { Heart, ChevronRight } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { motion } from 'framer-motion';
 
@@ -23,42 +23,6 @@ const activities: Activity[] = [
     path: '/activities/self-care',
     available: true,
     gradient: 'from-pink-500/20 to-rose-500/20',
-  },
-  {
-    id: 'mindfulness',
-    title: 'Mindfulness Games',
-    description: 'Relaxing activities to calm your mind',
-    icon: Brain,
-    path: '/activities/mindfulness',
-    available: false,
-    gradient: 'from-purple-500/20 to-indigo-500/20',
-  },
-  {
-    id: 'creative',
-    title: 'Creative Corner',
-    description: 'Express yourself through art and creativity',
-    icon: Palette,
-    path: '/activities/creative',
-    available: false,
-    gradient: 'from-orange-500/20 to-amber-500/20',
-  },
-  {
-    id: 'music',
-    title: 'Sound Therapy',
-    description: 'Soothing sounds and music for relaxation',
-    icon: Music,
-    path: '/activities/music',
-    available: false,
-    gradient: 'from-cyan-500/20 to-teal-500/20',
-  },
-  {
-    id: 'games',
-    title: 'Fun Games',
-    description: 'Light-hearted games to lift your mood',
-    icon: Gamepad2,
-    path: '/activities/games',
-    available: false,
-    gradient: 'from-green-500/20 to-emerald-500/20',
   },
 ];
 
