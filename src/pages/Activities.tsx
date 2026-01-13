@@ -1,44 +1,40 @@
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Heart, ChevronRight, Flame, Trophy, Target, Sparkles } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { motion } from 'framer-motion';
 
-interface Activity {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ElementType;
-  path: string;
-  available: boolean;
-  gradient: string;
-}
-
-const activities: Activity[] = [
+const selfCareFeatures = [
   {
-    id: 'self-care',
-    title: 'Daily Self-Care',
-    description: 'Complete daily wellness challenges and track your progress',
-    icon: Heart,
-    path: '/activities/self-care',
-    available: true,
-    gradient: 'from-pink-500/20 to-rose-500/20',
+    icon: Target,
+    title: 'Daily Challenges',
+    description: 'Simple wellness tasks to complete each day',
+  },
+  {
+    icon: Flame,
+    title: 'Streak Tracking',
+    description: 'Build healthy habits with daily streaks',
+  },
+  {
+    icon: Trophy,
+    title: 'Earn Points',
+    description: 'Gain self-care points for completing tasks',
+  },
+  {
+    icon: Sparkles,
+    title: 'Celebrate Progress',
+    description: 'Watch your wellness journey grow',
   },
 ];
 
 export default function Activities() {
   const navigate = useNavigate();
 
-  const handleActivityClick = (activity: Activity) => {
-    if (activity.available) {
-      navigate(activity.path);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/30 px-6 pt-12 pb-8">
+      <div className="bg-primary/10 px-6 pt-12 pb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -51,52 +47,60 @@ export default function Activities() {
         </motion.div>
       </div>
 
-      <div className="px-4 -mt-4 max-w-md mx-auto space-y-3">
-        {activities.map((activity, index) => {
-          const Icon = activity.icon;
-          
-          return (
-            <motion.div
-              key={activity.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card 
-                className={`bg-card/80 backdrop-blur-sm border-border/50 shadow-sm transition-all ${
-                  activity.available 
-                    ? 'cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-[0.98]' 
-                    : 'opacity-60'
-                }`}
-                onClick={() => handleActivityClick(activity)}
+      <div className="px-4 -mt-4 max-w-md mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <Card className="bg-card border-border/50 shadow-sm overflow-hidden">
+            {/* Header Section */}
+            <div className="bg-primary/10 p-5">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-primary/20">
+                  <Heart className="w-7 h-7 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-foreground">Daily Self-Care</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Complete daily wellness challenges and track your progress
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <CardContent className="p-5 space-y-5">
+              {/* Features Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                {selfCareFeatures.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 + index * 0.1 }}
+                      className="p-3 rounded-lg bg-muted/50"
+                    >
+                      <Icon className="w-5 h-5 text-primary mb-2" />
+                      <h4 className="text-sm font-medium text-foreground">{feature.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">{feature.description}</p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* CTA Button */}
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                onClick={() => navigate('/activities/self-care')}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${activity.gradient}`}>
-                      <Icon className="w-6 h-6 text-foreground" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-foreground">{activity.title}</h3>
-                        {!activity.available && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                            Coming Soon
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
-                        {activity.description}
-                      </p>
-                    </div>
-                    {activity.available && (
-                      <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          );
-        })}
+                Start Today's Challenges
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       <BottomNav />
