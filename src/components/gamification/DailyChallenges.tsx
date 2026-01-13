@@ -162,7 +162,7 @@ export default function DailyChallenges() {
 
   if (loading) {
     return (
-      <Card className="bg-gradient-to-br from-accent/30 to-accent/10 border-accent/20">
+      <Card className="bg-primary/10 border-primary/20">
         <CardContent className="p-6">
           <div className="animate-pulse space-y-4">
             <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -178,7 +178,7 @@ export default function DailyChallenges() {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-accent/30 via-accent/20 to-primary/10 border-accent/30 overflow-hidden relative">
+    <Card className="bg-primary/10 border-primary/20 overflow-hidden relative">
       {/* Celebration confetti overlay */}
       <AnimatePresence>
         {celebratingId && (
