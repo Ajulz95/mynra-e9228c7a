@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, ChevronRight, Flame, Trophy, Target, Sparkles, Brain, Wind, BookHeart, Clock, Lightbulb, Smile, Feather, Star, Leaf, Sun } from 'lucide-react';
+import { Heart, ChevronRight, Flame, Trophy, Target, Sparkles, Brain, Palette, Music, Gamepad2, Focus, Puzzle, Zap, Brush, Pencil, Image, Headphones, Volume2, Radio, Waves, Dices, Smile, PartyPopper, Medal } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
@@ -13,25 +13,32 @@ const selfCareFeatures = [
   { icon: Sparkles, title: 'Celebrate Progress', description: 'Watch your wellness journey grow' },
 ];
 
-const breathingFeatures = [
-  { icon: Wind, title: 'Guided Sessions', description: 'Follow along with calming breathing patterns' },
-  { icon: Clock, title: 'Timed Exercises', description: 'Sessions from 1 to 10 minutes' },
-  { icon: Leaf, title: 'Reduce Stress', description: 'Lower anxiety with proven techniques' },
-  { icon: Sun, title: 'Daily Practice', description: 'Build a consistent mindfulness habit' },
+const mindfulnessFeatures = [
+  { icon: Brain, title: 'Focus Games', description: 'Train your attention and presence' },
+  { icon: Puzzle, title: 'Calming Puzzles', description: 'Gentle challenges to quiet the mind' },
+  { icon: Focus, title: 'Meditation Aids', description: 'Interactive tools for mindfulness' },
+  { icon: Zap, title: 'Quick Sessions', description: 'Mindful moments in just minutes' },
 ];
 
-const gratitudeFeatures = [
-  { icon: BookHeart, title: 'Daily Prompts', description: 'Thoughtful questions to inspire reflection' },
-  { icon: Star, title: 'Save Moments', description: 'Build a collection of positive memories' },
-  { icon: Smile, title: 'Boost Mood', description: 'Shift focus to what matters most' },
-  { icon: Feather, title: 'Easy Entries', description: 'Quick and simple journaling experience' },
+const creativeFeatures = [
+  { icon: Palette, title: 'Art Activities', description: 'Express yourself through colors and shapes' },
+  { icon: Brush, title: 'Drawing Tools', description: 'Simple and relaxing art exercises' },
+  { icon: Pencil, title: 'Writing Prompts', description: 'Creative journaling and storytelling' },
+  { icon: Image, title: 'Visual Projects', description: 'Create something beautiful today' },
 ];
 
-const affirmationFeatures = [
-  { icon: Lightbulb, title: 'Daily Affirmations', description: 'Positive statements to start your day' },
-  { icon: Brain, title: 'Rewire Thinking', description: 'Build healthier thought patterns' },
-  { icon: Sparkles, title: 'Personalized', description: 'Affirmations tailored to your journey' },
-  { icon: Heart, title: 'Self-Compassion', description: 'Nurture kindness towards yourself' },
+const soundFeatures = [
+  { icon: Headphones, title: 'Guided Audio', description: 'Calming narrations and meditations' },
+  { icon: Volume2, title: 'Ambient Sounds', description: 'Nature and relaxation soundscapes' },
+  { icon: Radio, title: 'Music Therapy', description: 'Curated playlists for wellness' },
+  { icon: Waves, title: 'Sleep Sounds', description: 'Drift off with soothing audio' },
+];
+
+const gamesFeatures = [
+  { icon: Gamepad2, title: 'Casual Games', description: 'Light-hearted fun to lift your mood' },
+  { icon: Dices, title: 'Random Challenges', description: 'Surprise activities to try' },
+  { icon: PartyPopper, title: 'Mood Boosters', description: 'Quick games for instant smiles' },
+  { icon: Medal, title: 'Achievements', description: 'Unlock rewards as you play' },
 ];
 
 export default function Activities() {
@@ -51,28 +58,36 @@ export default function Activities() {
       onClick: () => navigate('/activities/self-care'),
     },
     {
-      icon: Wind,
-      title: 'Breathing Exercises',
-      description: 'Calm your mind with guided breathing techniques',
-      features: breathingFeatures,
-      cta: 'Start Breathing',
-      onClick: () => handleComingSoon('Breathing Exercises'),
+      icon: Brain,
+      title: 'Mindfulness Games',
+      description: 'Relaxing activities to calm your mind and train focus',
+      features: mindfulnessFeatures,
+      cta: 'Play Now',
+      onClick: () => handleComingSoon('Mindfulness Games'),
     },
     {
-      icon: BookHeart,
-      title: 'Gratitude Journal',
-      description: 'Cultivate positivity by reflecting on what you\'re thankful for',
-      features: gratitudeFeatures,
-      cta: 'Write Entry',
-      onClick: () => handleComingSoon('Gratitude Journal'),
+      icon: Palette,
+      title: 'Creative Corner',
+      description: 'Express yourself through art, writing, and creativity',
+      features: creativeFeatures,
+      cta: 'Get Creative',
+      onClick: () => handleComingSoon('Creative Corner'),
     },
     {
-      icon: Lightbulb,
-      title: 'Daily Affirmations',
-      description: 'Empower yourself with positive self-talk and encouragement',
-      features: affirmationFeatures,
-      cta: 'Get Inspired',
-      onClick: () => handleComingSoon('Daily Affirmations'),
+      icon: Headphones,
+      title: 'Sound Therapy',
+      description: 'Soothing sounds and music for relaxation and sleep',
+      features: soundFeatures,
+      cta: 'Listen Now',
+      onClick: () => handleComingSoon('Sound Therapy'),
+    },
+    {
+      icon: Gamepad2,
+      title: 'Fun Games',
+      description: 'Light-hearted games to lift your mood and have fun',
+      features: gamesFeatures,
+      cta: 'Start Playing',
+      onClick: () => handleComingSoon('Fun Games'),
     },
   ];
 
