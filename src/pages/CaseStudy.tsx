@@ -20,7 +20,17 @@ import {
   CheckCircle2,
   ArrowRight,
   Download,
-  Loader2
+  Loader2,
+  Database,
+  Server,
+  GitBranch,
+  Activity,
+  Zap,
+  BarChart3,
+  Workflow,
+  ShieldCheck,
+  Eye,
+  Cpu
 } from 'lucide-react';
 
 export default function CaseStudy() {
@@ -527,6 +537,454 @@ export default function CaseStudy() {
               </div>
             </CardContent>
           </Card>
+        </section>
+
+        <Separator />
+
+        {/* Backend Architecture Deep Dive */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <Server className="w-5 h-5 text-primary" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">Backend Architecture Deep Dive</h2>
+          </div>
+
+          <p className="text-lg text-muted-foreground mb-8">
+            Mynra's backend is built on a serverless PostgreSQL architecture with real-time capabilities,
+            enforcing privacy and security at the database layer through Row Level Security policies and
+            server-side trigger functions.
+          </p>
+
+          {/* Architecture Diagram */}
+          <Card className="bg-muted/30 mb-8">
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Workflow className="w-4 h-4 text-primary" />
+                System Architecture
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div className="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                  <div className="text-sm font-semibold text-primary mb-2">Client Layer</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>React 18 + TypeScript</p>
+                    <p>React Query (Cache & Sync)</p>
+                    <p>Supabase JS Client</p>
+                    <p>Capacitor (Mobile Bridge)</p>
+                  </div>
+                </div>
+                <div className="p-4 bg-accent/10 rounded-lg border border-accent/20">
+                  <div className="text-sm font-semibold text-accent mb-2">API & Auth Layer</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>PostgREST Auto-Generated API</p>
+                    <p>GoTrue Auth (JWT)</p>
+                    <p>Edge Functions (Deno)</p>
+                    <p>Realtime WebSocket Server</p>
+                  </div>
+                </div>
+                <div className="p-4 bg-secondary/20 rounded-lg border border-secondary/30">
+                  <div className="text-sm font-semibold text-primary mb-2">Data Layer</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>PostgreSQL 15</p>
+                    <p>Row Level Security (RLS)</p>
+                    <p>Database Functions & Triggers</p>
+                    <p>Automated Migrations</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center mt-4">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="w-8 h-px bg-primary/40"></div>
+                  <span>Encrypted at rest & in transit</span>
+                  <div className="w-8 h-px bg-primary/40"></div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Data Flow */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <GitBranch className="w-4 h-4 text-primary" />
+              Data Flow & Event Pipeline
+            </h3>
+            <div className="space-y-4">
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs font-bold text-primary">1</div>
+                <div>
+                  <div className="font-medium text-foreground">User Action</div>
+                  <p className="text-sm text-muted-foreground">Client sends authenticated request via Supabase JS SDK with JWT token</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs font-bold text-primary">2</div>
+                <div>
+                  <div className="font-medium text-foreground">RLS Policy Enforcement</div>
+                  <p className="text-sm text-muted-foreground">PostgreSQL evaluates Row Level Security policies using <code className="text-xs bg-muted px-1 rounded">auth.uid()</code> — ensuring users can only access their own data</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs font-bold text-primary">3</div>
+                <div>
+                  <div className="font-medium text-foreground">Trigger Cascade</div>
+                  <p className="text-sm text-muted-foreground">Database triggers fire on mutations — auto-creating profiles, updating gamification stats, sending notifications</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs font-bold text-primary">4</div>
+                <div>
+                  <div className="font-medium text-foreground">Realtime Broadcast</div>
+                  <p className="text-sm text-muted-foreground">Changes propagate via WebSocket to subscribed clients — powering live chat, notifications, and match alerts</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Security Model */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-primary" />
+              Security & Privacy Model
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card>
+                <CardContent className="p-4">
+                  <Lock className="w-5 h-5 text-primary mb-2" />
+                  <div className="font-medium text-sm mb-1">Row Level Security</div>
+                  <p className="text-xs text-muted-foreground">
+                    Every table enforces RLS policies. Journal entries, boundaries, and symptom logs 
+                    are strictly user-scoped — no admin backdoor, no data leaks between users.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <Eye className="w-5 h-5 text-primary mb-2" />
+                  <div className="font-medium text-sm mb-1">Security Definer Functions</div>
+                  <p className="text-xs text-muted-foreground">
+                    Cross-user queries (matching, connection status) use <code className="bg-muted px-1 rounded">SECURITY DEFINER</code> functions 
+                    that expose only boolean results — never raw user data.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <Shield className="w-5 h-5 text-primary mb-2" />
+                  <div className="font-medium text-sm mb-1">Pseudonymous Identity</div>
+                  <p className="text-xs text-muted-foreground">
+                    Auto-generated pseudonyms (<code className="bg-muted px-1 rounded">Mynra_</code> prefix) via database trigger on signup. 
+                    Real names are never required or stored.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <Zap className="w-5 h-5 text-primary mb-2" />
+                  <div className="font-medium text-sm mb-1">Progressive Trust</div>
+                  <p className="text-xs text-muted-foreground">
+                    Voice calls unlock only after 20 mutual messages — enforced by a server-side 
+                    function, not client-side checks, preventing bypass.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Key Database Functions */}
+          <Card className="bg-muted/30">
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Database className="w-4 h-4 text-primary" />
+                Core Server-Side Functions
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div className="p-3 bg-background rounded-lg">
+                  <code className="text-primary font-mono text-xs">handle_new_user()</code>
+                  <p className="text-muted-foreground text-xs mt-1">Trigger on auth.users INSERT — auto-creates profile with pseudonym</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg">
+                  <code className="text-primary font-mono text-xs">are_users_matched(user1, user2)</code>
+                  <p className="text-muted-foreground text-xs mt-1">Checks mutual accepted connection requests — powers the dual-consent matching</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg">
+                  <code className="text-primary font-mono text-xs">get_connection_status(current, other)</code>
+                  <p className="text-muted-foreground text-xs mt-1">Returns state machine value: none → pending_sent → pending_received → awaiting_match → matched</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg">
+                  <code className="text-primary font-mono text-xs">is_voice_call_unlocked(user1, user2)</code>
+                  <p className="text-muted-foreground text-xs mt-1">Progressive trust gate — requires 20+ messages from BOTH users before enabling voice</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg">
+                  <code className="text-primary font-mono text-xs">update_gamification_on_completion()</code>
+                  <p className="text-muted-foreground text-xs mt-1">Trigger on challenge completion — updates points, streaks with gentle "no-penalty" freeze logic</p>
+                </div>
+                <div className="p-3 bg-background rounded-lg">
+                  <code className="text-primary font-mono text-xs">notify_connection_accepted()</code>
+                  <p className="text-muted-foreground text-xs mt-1">Detects mutual matches and fires notifications to both users when connection completes</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+
+        {/* Behavioral Intelligence Engine */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <Brain className="w-5 h-5 text-accent" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">Behavioral Intelligence Engine</h2>
+          </div>
+
+          <p className="text-lg text-muted-foreground mb-4">
+            At the core of Mynra is a behavioral intelligence engine that transforms raw emotional data
+            into actionable growth pathways — helping users understand, track, and evolve their mental
+            health journey over time.
+          </p>
+
+          <Card className="border-l-4 border-l-accent bg-accent/5 mb-8">
+            <CardContent className="p-6">
+              <p className="text-foreground font-medium italic">
+                "We don't just store data — we surface patterns that help users see their own growth,
+                turning scattered feelings into structured self-awareness."
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Multi-Signal Capture */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-accent" />
+              Multi-Signal Emotional Capture
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              The engine captures emotional data across four dimensions per journal entry,
+              plus freeform content and user-generated tags — creating a rich behavioral dataset.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl mb-2">😊</div>
+                  <div className="text-sm font-medium">Mood</div>
+                  <div className="text-xs text-muted-foreground">1-10 scale</div>
+                  <div className="text-xs text-muted-foreground mt-1">Core emotional state</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl mb-2">⚡</div>
+                  <div className="text-sm font-medium">Energy</div>
+                  <div className="text-xs text-muted-foreground">1-10 scale</div>
+                  <div className="text-xs text-muted-foreground mt-1">Physical vitality</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl mb-2">💭</div>
+                  <div className="text-sm font-medium">Anxiety</div>
+                  <div className="text-xs text-muted-foreground">1-10 scale</div>
+                  <div className="text-xs text-muted-foreground mt-1">Stress indicator</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl mb-2">🌙</div>
+                  <div className="text-sm font-medium">Sleep</div>
+                  <div className="text-xs text-muted-foreground">1-10 scale</div>
+                  <div className="text-xs text-muted-foreground mt-1">Rest quality</div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Intelligence Pipeline */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Cpu className="w-4 h-4 text-accent" />
+              Intelligence Pipeline
+            </h3>
+            <Card className="bg-muted/30">
+              <CardContent className="p-6">
+                <div className="space-y-6">
+                  <div className="flex gap-4 items-start">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-accent">1</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-foreground">Data Ingestion</div>
+                      <p className="text-sm text-muted-foreground">
+                        Quick mood logs and full journal entries flow into <code className="text-xs bg-background px-1 rounded">journal_entries</code> and 
+                        <code className="text-xs bg-background px-1 rounded">symptom_logs</code> tables with timestamps, 
+                        creating a time-series behavioral dataset.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 items-start">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-accent">2</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-foreground">Trend Analysis</div>
+                      <p className="text-sm text-muted-foreground">
+                        The MoodTrends engine aggregates entries over 7/14/30-day windows, computing rolling 
+                        averages across all four emotional dimensions. Multi-line Recharts visualizations reveal 
+                        correlations (e.g., low sleep → high anxiety).
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 items-start">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-accent">3</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-foreground">NLP Theme Extraction</div>
+                      <p className="text-sm text-muted-foreground">
+                        The ThemeCloud processor runs client-side NLP: tokenization, stop-word filtering, 
+                        and frequency analysis on journal content. Combined with user tags, it surfaces 
+                        recurring emotional themes — making the invisible visible.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 items-start">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-accent">4</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-foreground">Behavioral Reinforcement</div>
+                      <p className="text-sm text-muted-foreground">
+                        The gamification engine rewards consistent self-reflection with points and streaks. 
+                        A "gentle freeze" algorithm preserves streaks during breaks — avoiding punishment 
+                        loops that harm mental health apps.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Emotional Growth Pathways */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-accent" />
+              Emotional Growth Pathways
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              The engine maps each user's journey through progressive growth stages,
+              adapting the experience based on their behavioral data.
+            </p>
+
+            <div className="space-y-4">
+              <Card className="border-l-4 border-l-primary/40">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-lg">🌱</span>
+                    <div className="font-semibold text-foreground">Stage 1: Exploring</div>
+                  </div>
+                  <p className="text-sm text-muted-foreground ml-9">
+                    New users begin with guided onboarding that captures their journey stage, challenges, 
+                    and boundaries. The system adapts prompts and peer suggestions based on initial self-assessment.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-secondary/60">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-lg">📊</span>
+                    <div className="font-semibold text-foreground">Stage 2: Self-Awareness</div>
+                  </div>
+                  <p className="text-sm text-muted-foreground ml-9">
+                    As users log moods and journal consistently, trend visualizations reveal patterns. 
+                    Theme clouds surface unconscious recurring topics. Users begin identifying triggers 
+                    and correlations (sleep ↔ anxiety, energy ↔ mood).
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-accent/60">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-lg">🤝</span>
+                    <div className="font-semibold text-foreground">Stage 3: Peer Connection</div>
+                  </div>
+                  <p className="text-sm text-muted-foreground ml-9">
+                    The dual-consent matching system connects users who share challenges. Progressive trust 
+                    gating (boundaries → text → 20-message threshold → voice) builds authentic relationships 
+                    while maintaining safety.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-primary">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-lg">🌟</span>
+                    <div className="font-semibold text-foreground">Stage 4: Active Growth</div>
+                  </div>
+                  <p className="text-sm text-muted-foreground ml-9">
+                    Daily challenges, mindfulness activities, and creative exercises provide structured growth. 
+                    The gentle streak system rewards consistency without punishing breaks — critical for mental health contexts.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-accent">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-lg">💪</span>
+                    <div className="font-semibold text-foreground">Stage 5: Supporting Others</div>
+                  </div>
+                  <p className="text-sm text-muted-foreground ml-9">
+                    Users in later journey stages can shift to "supporting others" mode — completing the 
+                    cycle by becoming peer mentors. Their insights become the foundation of community resilience.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Key Differentiators */}
+          <div>
+            <h3 className="font-semibold text-foreground mb-4">What Makes This Engine Different</h3>
+            <div className="grid md:grid-cols-3 gap-4">
+              <Card>
+                <CardContent className="p-4">
+                  <Sparkles className="w-6 h-6 text-accent mb-2" />
+                  <div className="font-medium text-sm mb-1">No-Guilt Design</div>
+                  <p className="text-xs text-muted-foreground">
+                    Streaks freeze instead of resetting. No push notifications guilt-tripping users. 
+                    Growth is celebrated, pauses are respected.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <Lock className="w-6 h-6 text-primary mb-2" />
+                  <div className="font-medium text-sm mb-1">Data Never Leaves</div>
+                  <p className="text-xs text-muted-foreground">
+                    Emotional data stays in the user's private scope. No aggregation, no selling, 
+                    no third-party analytics on feelings. RLS enforced at DB level.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <Brain className="w-6 h-6 text-primary mb-2" />
+                  <div className="font-medium text-sm mb-1">Therapist-Ready Insights</div>
+                  <p className="text-xs text-muted-foreground">
+                    Trend data and theme clouds are designed to be shareable with mental health 
+                    professionals — bridging self-reflection and clinical support.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </section>
 
         <Separator />
