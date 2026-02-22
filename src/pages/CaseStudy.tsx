@@ -989,6 +989,217 @@ export default function CaseStudy() {
 
         <Separator />
 
+        {/* Backend Behavioral Data Tracking — Investor Deep Dive */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <Database className="w-5 h-5 text-accent" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">Backend Behavioral Data Tracking</h2>
+          </div>
+
+          <Card className="border-l-4 border-l-primary bg-primary/5 mb-8">
+            <CardContent className="p-6">
+              <p className="text-foreground font-medium italic">
+                "Every interaction — mood log, journal entry, peer connection, challenge completion — is a behavioral 
+                signal captured, stored, and analyzed on the backend. Here's exactly how we do it and why our stack 
+                makes this a defensible, unique system."
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* What We Track */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-accent" />
+              What We Track on the Backend
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Every data point below is persisted in PostgreSQL with timestamps, user-scoped via Row Level Security, 
+              and available for longitudinal analysis. This isn't client-side localStorage — it's durable, queryable, real-time behavioral data.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card>
+                <CardContent className="p-4">
+                  <div className="font-medium text-sm mb-2 text-foreground">📊 Emotional Time-Series</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>• <code className="bg-muted px-1 rounded">journal_entries</code> — mood, energy, anxiety, sleep (4-dimensional scoring per entry)</p>
+                    <p>• <code className="bg-muted px-1 rounded">symptom_logs</code> — discrete symptom tracking with intensity & freeform notes</p>
+                    <p>• Every entry timestamped for time-series aggregation across days/weeks/months</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="font-medium text-sm mb-2 text-foreground">🏷️ Semantic Behavioral Tags</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>• User-generated tags stored as PostgreSQL arrays on <code className="bg-muted px-1 rounded">journal_entries.tags[]</code></p>
+                    <p>• Client-side NLP extracts recurring themes from freeform content (tokenization + frequency analysis)</p>
+                    <p>• Combined tag + word frequency creates a behavioral fingerprint over time</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="font-medium text-sm mb-2 text-foreground">🤝 Social Behavioral Signals</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>• <code className="bg-muted px-1 rounded">connection_requests</code> — tracks connection lifecycle (pending → accepted → matched)</p>
+                    <p>• <code className="bg-muted px-1 rounded">messages</code> — message count per conversation drives progressive trust gating</p>
+                    <p>• Server-side functions compute relationship depth (e.g., 20-message voice unlock threshold)</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="font-medium text-sm mb-2 text-foreground">🎯 Engagement & Growth Metrics</div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>• <code className="bg-muted px-1 rounded">user_gamification_stats</code> — points, streaks, longest streak, last active date</p>
+                    <p>• <code className="bg-muted px-1 rounded">user_challenge_completions</code> — challenge-level completion with points earned</p>
+                    <p>• <code className="bg-muted px-1 rounded">user_journey_stages</code> — explicit growth stage tracking (exploring → supporting others)</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* How We Track It */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Cpu className="w-4 h-4 text-accent" />
+              How the Tech Stack Makes This Unique
+            </h3>
+
+            <div className="space-y-4">
+              <Card className="bg-muted/30">
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Database className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground mb-1">PostgreSQL as the Behavioral Data Warehouse</div>
+                      <p className="text-sm text-muted-foreground">
+                        Unlike NoSQL approaches, our PostgreSQL backend enables <strong>relational queries across behavioral dimensions</strong>. 
+                        We can JOIN mood trends with challenge completions, correlate sleep quality with social engagement patterns, 
+                        and run window functions for rolling averages — all at the database layer. This is a proper analytical foundation, 
+                        not a flat data dump.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-muted/30">
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <Zap className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground mb-1">Server-Side Trigger Intelligence</div>
+                      <p className="text-sm text-muted-foreground">
+                        Database triggers (<code className="bg-background px-1 rounded text-xs">update_gamification_on_completion</code>, 
+                        <code className="bg-background px-1 rounded text-xs">notify_connection_accepted</code>) react to behavioral events in real-time. 
+                        When a user completes a challenge, the trigger <strong>automatically computes streak logic, updates points, and determines 
+                        if this is a consecutive day</strong> — all atomically within the transaction. No cron jobs, no delayed batch processing.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-muted/30">
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center flex-shrink-0">
+                      <ShieldCheck className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground mb-1">RLS-Enforced Privacy as a Competitive Moat</div>
+                      <p className="text-sm text-muted-foreground">
+                        Row Level Security means behavioral data isolation is <strong>enforced at the database engine level</strong>, not in application code. 
+                        Even if our API has a bug, PostgreSQL will reject cross-user data access. For a mental health product, this isn't just a feature — 
+                        it's a <strong>regulatory and trust advantage</strong> that most competitors implement only in middleware (bypassable).
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-muted/30">
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Workflow className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground mb-1">Hybrid Client + Server Analysis Pipeline</div>
+                      <p className="text-sm text-muted-foreground">
+                        Our analysis runs at two layers: <strong>client-side NLP</strong> (theme extraction, word frequency) keeps sensitive 
+                        content processing on-device, while <strong>server-side functions</strong> handle cross-entity logic (matching, trust gating, 
+                        gamification). This hybrid approach means we get real-time intelligence without shipping raw journal text to external AI services.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-muted/30">
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                      <BarChart3 className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground mb-1">Recommendation Engine Architecture</div>
+                      <p className="text-sm text-muted-foreground">
+                        The recommendation layer combines: <strong>(1)</strong> journey stage + challenge overlap for peer matching, 
+                        <strong>(2)</strong> mood trend direction for adaptive daily challenges, 
+                        <strong>(3)</strong> engagement frequency for streak-sensitive nudging, and 
+                        <strong>(4)</strong> content themes for personalized activity suggestions. 
+                        Each signal feeds a scoring model that evolves with the user — this is <strong>compound behavioral intelligence</strong>, 
+                        not a static rules engine.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Why This Is Defensible */}
+          <Card className="border-l-4 border-l-accent bg-accent/5">
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-foreground mb-3">Why This Is Defensible</h3>
+              <div className="grid md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <div className="font-medium text-foreground mb-1">📈 Data Flywheel</div>
+                  <p className="text-xs text-muted-foreground">
+                    Every user interaction enriches the behavioral dataset. More data → better trend detection → 
+                    more relevant recommendations → higher engagement → more data. This compounds over time.
+                  </p>
+                </div>
+                <div>
+                  <div className="font-medium text-foreground mb-1">🔒 Privacy-First Moat</div>
+                  <p className="text-xs text-muted-foreground">
+                    Competitors who aggregate behavioral data face regulatory risk (HIPAA, GDPR). Our user-scoped, 
+                    RLS-enforced architecture is privacy-compliant by design — not by policy.
+                  </p>
+                </div>
+                <div>
+                  <div className="font-medium text-foreground mb-1">🧠 Switching Cost</div>
+                  <p className="text-xs text-muted-foreground">
+                    As users build months of emotional history, trend data, and peer relationships, the platform 
+                    becomes a personal emotional record — creating natural retention and high switching costs.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+
         {/* Outcomes & Future */}
         <section>
           <div className="flex items-center gap-3 mb-6">
