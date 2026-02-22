@@ -30,7 +30,11 @@ import {
   Workflow,
   ShieldCheck,
   Eye,
-  Cpu
+  Cpu,
+  Code,
+  Boxes,
+  Rocket,
+  Network
 } from 'lucide-react';
 
 export default function CaseStudy() {
@@ -690,41 +694,201 @@ export default function CaseStudy() {
             </div>
           </div>
 
-          {/* Key Database Functions */}
-          <Card className="bg-muted/30">
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Database className="w-4 h-4 text-primary" />
-                Core Server-Side Functions
-              </h3>
-              <div className="space-y-3 text-sm">
-                <div className="p-3 bg-background rounded-lg">
-                  <code className="text-primary font-mono text-xs">handle_new_user()</code>
-                  <p className="text-muted-foreground text-xs mt-1">Trigger on auth.users INSERT — auto-creates profile with pseudonym</p>
+          {/* Key Database Functions with Code Snippets */}
+          <div className="space-y-6">
+            <h3 className="font-semibold text-foreground flex items-center gap-2">
+              <Code className="w-4 h-4 text-primary" />
+              Core Rules & Logic — Code Snippets
+            </h3>
+
+            {/* RLS Policy Code */}
+            <Card className="bg-muted/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-primary/10 border-b border-primary/10">
+                  <code className="text-xs font-mono text-primary font-semibold">Row Level Security — Journal Entries</code>
                 </div>
-                <div className="p-3 bg-background rounded-lg">
-                  <code className="text-primary font-mono text-xs">are_users_matched(user1, user2)</code>
-                  <p className="text-muted-foreground text-xs mt-1">Checks mutual accepted connection requests — powers the dual-consent matching</p>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`-- Users can ONLY access their own journal entries
+-- Enforced at PostgreSQL engine level, not application code
+CREATE POLICY "Users can manage their own journal entries"
+ON public.journal_entries
+FOR ALL
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
+-- Even with a compromised API, cross-user data access
+-- is rejected by the database engine itself.`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            {/* Dual Consent Matching */}
+            <Card className="bg-muted/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-accent/10 border-b border-accent/10">
+                  <code className="text-xs font-mono text-accent font-semibold">Dual-Consent Matching — are_users_matched()</code>
                 </div>
-                <div className="p-3 bg-background rounded-lg">
-                  <code className="text-primary font-mono text-xs">get_connection_status(current, other)</code>
-                  <p className="text-muted-foreground text-xs mt-1">Returns state machine value: none → pending_sent → pending_received → awaiting_match → matched</p>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`-- Both users must independently accept each other
+-- This prevents one-sided connections
+CREATE FUNCTION are_users_matched(user1_id uuid, user2_id uuid)
+RETURNS boolean AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM connection_requests
+    WHERE requester_id = user1_id
+      AND recipient_id = user2_id
+      AND status = 'accepted'
+  ) AND EXISTS (
+    SELECT 1 FROM connection_requests
+    WHERE requester_id = user2_id
+      AND recipient_id = user1_id
+      AND status = 'accepted'
+  );
+$$ LANGUAGE sql STABLE SECURITY DEFINER;`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            {/* Progressive Trust Gate */}
+            <Card className="bg-muted/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-secondary/20 border-b border-secondary/20">
+                  <code className="text-xs font-mono text-primary font-semibold">Progressive Trust Gate — Voice Call Unlock</code>
                 </div>
-                <div className="p-3 bg-background rounded-lg">
-                  <code className="text-primary font-mono text-xs">is_voice_call_unlocked(user1, user2)</code>
-                  <p className="text-muted-foreground text-xs mt-1">Progressive trust gate — requires 20+ messages from BOTH users before enabling voice</p>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`-- Voice calls require 20+ messages from BOTH users
+-- Server-enforced, not client-side — prevents bypass
+CREATE FUNCTION is_voice_call_unlocked(
+  user1_id uuid, user2_id uuid
+) RETURNS boolean AS $$
+  SELECT
+    count_user_messages_in_conversation(
+      user1_id, get_conversation_id(user1_id, user2_id)
+    ) >= 20
+    AND
+    count_user_messages_in_conversation(
+      user2_id, get_conversation_id(user1_id, user2_id)
+    ) >= 20;
+$$ LANGUAGE sql STABLE SECURITY DEFINER;`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            {/* Gamification Trigger */}
+            <Card className="bg-muted/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-accent/10 border-b border-accent/10">
+                  <code className="text-xs font-mono text-accent font-semibold">Gentle Streak Engine — Gamification Trigger</code>
                 </div>
-                <div className="p-3 bg-background rounded-lg">
-                  <code className="text-primary font-mono text-xs">update_gamification_on_completion()</code>
-                  <p className="text-muted-foreground text-xs mt-1">Trigger on challenge completion — updates points, streaks with gentle "no-penalty" freeze logic</p>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`-- Trigger fires on every challenge completion
+-- Key insight: streaks FREEZE on missed days, never reset
+CREATE FUNCTION update_gamification_on_completion()
+RETURNS trigger AS $$
+DECLARE
+  days_since_last INTEGER;
+BEGIN
+  -- Calculate gap since last activity
+  days_since_last := NEW.completed_date
+    - stats_record.last_active_date;
+
+  IF days_since_last = 0 THEN
+    -- Same day: just add points
+    UPDATE user_gamification_stats
+    SET total_points = total_points + NEW.points_earned;
+  ELSIF days_since_last = 1 THEN
+    -- Consecutive day: increment streak
+    UPDATE user_gamification_stats
+    SET current_streak = current_streak + 1,
+        longest_streak = GREATEST(longest_streak,
+                                   current_streak + 1);
+  ELSE
+    -- Missed days: FREEZE streak (no penalty)
+    -- This is critical for mental health apps —
+    -- punishing users for breaks causes harm
+    UPDATE user_gamification_stats
+    SET last_active_date = NEW.completed_date;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            {/* Connection State Machine */}
+            <Card className="bg-muted/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-primary/10 border-b border-primary/10">
+                  <code className="text-xs font-mono text-primary font-semibold">Connection State Machine — get_connection_status()</code>
                 </div>
-                <div className="p-3 bg-background rounded-lg">
-                  <code className="text-primary font-mono text-xs">notify_connection_accepted()</code>
-                  <p className="text-muted-foreground text-xs mt-1">Detects mutual matches and fires notifications to both users when connection completes</p>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`-- Returns deterministic state for any user pair
+-- Powers the entire connection UI lifecycle
+CREATE FUNCTION get_connection_status(
+  current_user_id uuid, other_user_id uuid
+) RETURNS text AS $$
+  SELECT CASE
+    WHEN are_users_matched(current_user_id,
+                           other_user_id)
+      THEN 'matched'
+    WHEN EXISTS (SELECT 1 FROM connection_requests
+      WHERE requester_id = current_user_id
+        AND recipient_id = other_user_id
+        AND status = 'pending')
+      THEN 'pending_sent'
+    WHEN EXISTS (SELECT 1 FROM connection_requests
+      WHERE requester_id = other_user_id
+        AND recipient_id = current_user_id
+        AND status = 'pending')
+      THEN 'pending_received'
+    ELSE 'none'
+  END;
+$$ LANGUAGE sql STABLE SECURITY DEFINER;`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            {/* NLP Theme Extraction */}
+            <Card className="bg-muted/30 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-secondary/20 border-b border-secondary/20">
+                  <code className="text-xs font-mono text-primary font-semibold">Client-Side NLP — Theme Extraction Engine</code>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`// Runs entirely on-device — no journal text
+// ever leaves the user's browser
+const extractThemes = (entries: JournalEntry[]) => {
+  const stopWords = new Set([
+    'the','a','an','and','or','but','in','on',
+    'feel','felt','today','really','things',...
+  ]);
+
+  const wordCounts: Record<string, number> = {};
+  entries.forEach(entry => {
+    const words = entry.content
+      .toLowerCase()
+      .replace(/[^a-z\\s]/g, '')
+      .split(/\\s+/)
+      .filter(w => w.length > 3
+                 && !stopWords.has(w));
+
+    words.forEach(word => {
+      wordCounts[word] =
+        (wordCounts[word] || 0) + 1;
+    });
+  });
+
+  // Surface recurring themes
+  return Object.entries(wordCounts)
+    .filter(([_, count]) => count >= 2)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+};`}
+                </pre>
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
         <Separator />
@@ -1192,6 +1356,359 @@ export default function CaseStudy() {
                     As users build months of emotional history, trend data, and peer relationships, the platform 
                     becomes a personal emotional record — creating natural retention and high switching costs.
                   </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+
+        {/* Full Tech Stack */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <Boxes className="w-5 h-5 text-primary" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">Full Tech Stack</h2>
+          </div>
+
+          <p className="text-muted-foreground mb-6 text-sm">
+            Every technology choice serves the product's core mission: safe, private, real-time emotional intelligence.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <Card>
+              <CardContent className="p-4">
+                <div className="font-semibold text-sm text-foreground mb-3 flex items-center gap-2">
+                  <Palette className="w-4 h-4 text-primary" />
+                  Frontend
+                </div>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex justify-between"><span>React 18</span><span className="text-primary font-medium">UI Framework</span></div>
+                  <div className="flex justify-between"><span>TypeScript</span><span className="text-primary font-medium">Type Safety</span></div>
+                  <div className="flex justify-between"><span>Vite</span><span className="text-primary font-medium">Build Tool</span></div>
+                  <div className="flex justify-between"><span>Tailwind CSS</span><span className="text-primary font-medium">Styling</span></div>
+                  <div className="flex justify-between"><span>shadcn/ui</span><span className="text-primary font-medium">Components</span></div>
+                  <div className="flex justify-between"><span>Framer Motion</span><span className="text-primary font-medium">Animations</span></div>
+                  <div className="flex justify-between"><span>Recharts</span><span className="text-primary font-medium">Visualizations</span></div>
+                  <div className="flex justify-between"><span>React Query</span><span className="text-primary font-medium">Data Sync</span></div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="font-semibold text-sm text-foreground mb-3 flex items-center gap-2">
+                  <Server className="w-4 h-4 text-accent" />
+                  Backend
+                </div>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex justify-between"><span>PostgreSQL 15</span><span className="text-accent font-medium">Database</span></div>
+                  <div className="flex justify-between"><span>PostgREST</span><span className="text-accent font-medium">Auto API</span></div>
+                  <div className="flex justify-between"><span>GoTrue (JWT)</span><span className="text-accent font-medium">Auth</span></div>
+                  <div className="flex justify-between"><span>Edge Functions</span><span className="text-accent font-medium">Serverless</span></div>
+                  <div className="flex justify-between"><span>Deno Runtime</span><span className="text-accent font-medium">Functions</span></div>
+                  <div className="flex justify-between"><span>Row Level Security</span><span className="text-accent font-medium">Data Privacy</span></div>
+                  <div className="flex justify-between"><span>WebSocket Server</span><span className="text-accent font-medium">Realtime</span></div>
+                  <div className="flex justify-between"><span>PL/pgSQL</span><span className="text-accent font-medium">Triggers</span></div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="font-semibold text-sm text-foreground mb-3 flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-secondary" />
+                  Intelligence
+                </div>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex justify-between"><span>Client NLP</span><span className="text-primary font-medium">Themes</span></div>
+                  <div className="flex justify-between"><span>Time-Series</span><span className="text-primary font-medium">Trends</span></div>
+                  <div className="flex justify-between"><span>Window Functions</span><span className="text-primary font-medium">Aggregation</span></div>
+                  <div className="flex justify-between"><span>Trigger Pipeline</span><span className="text-primary font-medium">Events</span></div>
+                  <div className="flex justify-between"><span>State Machine</span><span className="text-primary font-medium">Connections</span></div>
+                  <div className="flex justify-between"><span>Streak Algorithm</span><span className="text-primary font-medium">Gamification</span></div>
+                  <div className="flex justify-between"><span>Capacitor</span><span className="text-primary font-medium">Mobile</span></div>
+                  <div className="flex justify-between"><span>html2pdf.js</span><span className="text-primary font-medium">Export</span></div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator />
+
+        {/* ML Augmentation — Scaling Phase */}
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <Rocket className="w-5 h-5 text-accent" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">Machine Learning Augmentation (Scaling Phase)</h2>
+          </div>
+
+          <Card className="border-l-4 border-l-primary bg-primary/5 mb-8">
+            <CardContent className="p-6">
+              <p className="text-foreground font-medium italic">
+                "Our current rule-based engine is the foundation. The ML layer doesn't replace it — it amplifies it. 
+                Every behavioral signal we already capture becomes training data for models that personalize the experience 
+                at scale."
+              </p>
+            </CardContent>
+          </Card>
+
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Network className="w-4 h-4 text-accent" />
+              ML Pipeline Architecture
+            </h3>
+
+            <Card className="bg-muted/30 overflow-hidden mb-6">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-accent/10 border-b border-accent/10">
+                  <code className="text-xs font-mono text-accent font-semibold">ML Pipeline — Edge Function + AI Gateway</code>
+                </div>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`// Edge Function: Behavioral Embedding Generator
+// Runs on Deno runtime, triggered by journal writes
+
+serve(async (req) => {
+  const { journal_entry, mood_history, tags } = 
+    await req.json();
+
+  // 1. Construct behavioral feature vector
+  const features = {
+    mood_trajectory: computeTrend(mood_history),
+    theme_embedding: await generateEmbedding(
+      journal_entry.content,
+      { model: "google/gemini-2.5-flash" }
+    ),
+    engagement_score: calculateEngagement(
+      mood_history.length, tags.length
+    ),
+    sleep_anxiety_correlation: pearsonR(
+      mood_history.map(m => m.sleep_quality),
+      mood_history.map(m => m.anxiety_level)
+    ),
+  };
+
+  // 2. Store embedding for similarity matching
+  await supabase.from('user_embeddings').upsert({
+    user_id: user.id,
+    embedding: features.theme_embedding,
+    behavioral_vector: features,
+  });
+
+  // 3. Generate personalized recommendations
+  const recs = await fetch(AI_GATEWAY_URL, {
+    body: JSON.stringify({
+      model: 'google/gemini-2.5-flash',
+      messages: [{
+        role: 'system',
+        content: \`Based on behavioral data:
+          Mood trend: \${features.mood_trajectory}
+          Themes: \${tags.join(', ')}
+          Sleep↔Anxiety r=\${
+            features.sleep_anxiety_correlation
+          }
+          Suggest 3 personalized activities.\`
+      }]
+    })
+  });
+
+  return new Response(JSON.stringify({
+    recommendations: recs, features
+  }));
+});`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-muted/30 overflow-hidden mb-6">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-primary/10 border-b border-primary/10">
+                  <code className="text-xs font-mono text-primary font-semibold">Peer Matching — Embedding Similarity (pgvector)</code>
+                </div>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`-- pgvector: vector similarity search in PostgreSQL
+-- Replaces rule-based matching with semantic matching
+
+CREATE TABLE user_embeddings (
+  user_id UUID PRIMARY KEY,
+  embedding vector(768),
+  behavioral_vector JSONB,
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Find semantically similar peers
+-- "I can't sleep" matches "insomnia keeps me up"
+CREATE FUNCTION find_similar_peers(
+  target_user_id UUID,
+  match_limit INT DEFAULT 10
+) RETURNS TABLE(user_id UUID, similarity FLOAT) AS $$
+  SELECT
+    ue.user_id,
+    1 - (ue.embedding <=> target.embedding)
+      AS similarity
+  FROM user_embeddings ue
+  CROSS JOIN user_embeddings target
+  WHERE target.user_id = target_user_id
+    AND ue.user_id != target_user_id
+  ORDER BY ue.embedding <=> target.embedding
+  LIMIT match_limit;
+$$ LANGUAGE sql STABLE SECURITY DEFINER;`}
+                </pre>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-muted/30 overflow-hidden mb-6">
+              <CardContent className="p-0">
+                <div className="px-4 py-2 bg-secondary/20 border-b border-secondary/20">
+                  <code className="text-xs font-mono text-primary font-semibold">Predictive Mood Forecasting</code>
+                </div>
+                <pre className="p-4 text-xs font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+{`// Predicts next 3 days based on historical patterns
+const forecastMood = async (userId: string) => {
+  const { data: history } = await supabase
+    .from('journal_entries')
+    .select('mood, energy_level, anxiety_level, 
+             sleep_quality, created_at')
+    .eq('user_id', userId)
+    .gte('created_at', thirtyDaysAgo)
+    .order('created_at');
+
+  // Feature engineering
+  const features = {
+    weekday_patterns: groupByDayOfWeek(history),
+    rolling_avg_7d: rollingAverage(history, 7),
+    volatility: stdDev(history.map(h => h.mood)),
+    sleep_mood_lag: lagCorrelation(
+      history.map(h => h.sleep_quality),
+      history.map(h => h.mood),
+      1  // 1-day lag
+    ),
+  };
+
+  // AI-powered prediction via gateway
+  const prediction = await aiGateway.complete({
+    model: 'google/gemini-2.5-flash',
+    prompt: \`Behavioral patterns:
+      Weekly: \${JSON.stringify(
+        features.weekday_patterns)}
+      7d trend: \${features.rolling_avg_7d}
+      Volatility: \${features.volatility}
+      Sleep→Mood lag: \${features.sleep_mood_lag}
+      
+      Predict mood for next 3 days.
+      Suggest proactive interventions.\`
+  });
+
+  return prediction;
+};`}
+                </pre>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* ML Capabilities Grid */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-foreground mb-4">ML-Powered Capabilities (Scaling Roadmap)</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card className="border-l-4 border-l-accent/60">
+                <CardContent className="p-4">
+                  <div className="font-semibold text-sm text-foreground mb-2">🧬 Semantic Peer Matching</div>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Replace tag-based matching with embedding similarity. Users writing about similar themes 
+                    get matched even if they use different words.
+                  </p>
+                  <div className="flex gap-1 flex-wrap">
+                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs rounded">pgvector</span>
+                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs rounded">Gemini Embeddings</span>
+                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs rounded">Cosine Similarity</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-primary/60">
+                <CardContent className="p-4">
+                  <div className="font-semibold text-sm text-foreground mb-2">📈 Predictive Mood Forecasting</div>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Detect patterns like "mood drops every Sunday" and proactively suggest 
+                    interventions before the dip happens.
+                  </p>
+                  <div className="flex gap-1 flex-wrap">
+                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded">Time-Series</span>
+                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded">Lag Correlation</span>
+                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded">AI Gateway</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-secondary/60">
+                <CardContent className="p-4">
+                  <div className="font-semibold text-sm text-foreground mb-2">🎯 Adaptive Challenge Engine</div>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Daily challenges adapt to behavioral data — breathing exercises when anxiety trends high, 
+                    social challenges when isolation patterns emerge.
+                  </p>
+                  <div className="flex gap-1 flex-wrap">
+                    <span className="px-2 py-0.5 bg-secondary/20 text-primary text-xs rounded">Reinforcement Learning</span>
+                    <span className="px-2 py-0.5 bg-secondary/20 text-primary text-xs rounded">Multi-Armed Bandit</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-accent">
+                <CardContent className="p-4">
+                  <div className="font-semibold text-sm text-foreground mb-2">🛡️ Content Safety & Sentiment</div>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Real-time sentiment analysis on messages to detect crisis signals with automatic 
+                    escalation to crisis resources while maintaining privacy.
+                  </p>
+                  <div className="flex gap-1 flex-wrap">
+                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs rounded">Sentiment Analysis</span>
+                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs rounded">Crisis Detection</span>
+                    <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs rounded">Edge Functions</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* ML Tech Stack */}
+          <Card className="bg-muted/30">
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Boxes className="w-4 h-4 text-accent" />
+                ML Infrastructure Stack
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <span className="text-muted-foreground"><strong className="text-foreground">AI Gateway</strong> — Multi-model access (Gemini, GPT-5) without API key management</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <span className="text-muted-foreground"><strong className="text-foreground">pgvector</strong> — Vector similarity search directly in PostgreSQL</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <span className="text-muted-foreground"><strong className="text-foreground">Edge Functions (Deno)</strong> — Serverless ML inference at the edge</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <span className="text-muted-foreground"><strong className="text-foreground">Gemini 2.5 Flash</strong> — Fast, cost-efficient embeddings & recommendations</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <span className="text-muted-foreground"><strong className="text-foreground">PostgreSQL Window Functions</strong> — Rolling averages & time-series at DB layer</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <span className="text-muted-foreground"><strong className="text-foreground">On-Device NLP</strong> — Privacy-preserving text analysis (no data leaves browser)</span>
+                  </div>
                 </div>
               </div>
             </CardContent>
