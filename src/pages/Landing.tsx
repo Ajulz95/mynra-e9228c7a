@@ -28,6 +28,7 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
   const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.section
+      id={id}
       ref={ref}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
