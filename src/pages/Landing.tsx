@@ -201,7 +201,7 @@ export default function Landing() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-8 text-base font-semibold rounded-xl shadow-lg shadow-accent/20">
+            <Button size="lg" className="text-accent-foreground h-14 px-8 text-base font-semibold rounded-xl shadow-lg shadow-accent/20 bg-primary">
               Get Early Access <ArrowRight className="w-5 h-5 ml-1" />
             </Button>
             <Button size="lg" variant="ghost" className="h-14 px-8 text-base font-semibold rounded-xl border border-border" onClick={() => scrollTo("how")}>
