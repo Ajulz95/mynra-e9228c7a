@@ -115,7 +115,7 @@ export default function Landing() {
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <Button size="sm" className="hidden md:inline-flex bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button size="sm" className="hidden md:inline-flex text-accent-foreground font-semibold bg-primary">
               Get Early Access
             </Button>
             <button className="md:hidden p-2" onClick={() => setMobileNav(!mobileNav)}>
