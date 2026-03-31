@@ -409,7 +409,7 @@ export default function Landing() {
             <p className="text-muted-foreground mb-8 text-lg">
               Join Mynra — it's free, anonymous, and built around you.
             </p>
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-10 text-base font-semibold rounded-xl shadow-lg shadow-accent/20">
+            <Button size="lg" className="text-accent-foreground h-14 px-10 text-base font-semibold rounded-xl shadow-lg shadow-accent/20 bg-primary">
               Get Early Access <ArrowRight className="w-5 h-5 ml-1" />
             </Button>
             <p className="text-xs text-muted-foreground mt-4">No real name required. No credit card.</p>
